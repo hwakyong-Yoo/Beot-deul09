@@ -6,11 +6,18 @@ import com.example.ewhaproject.repository.TransactionRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Slf4j
 @Service
 public class TransactionService {
     @Autowired
     TransactionRepository transactionRepository;
+
+    public List<Transaction> findTransactionsByUserId(String userId) {
+        return transactionRepository.findByUserId(userId);
+    }
 
     public TransactionDto purchase(TransactionDto transactionDto) {
         Transaction transaction = transactionDto.toEntity();
