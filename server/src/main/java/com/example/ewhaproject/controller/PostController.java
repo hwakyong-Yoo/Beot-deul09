@@ -19,6 +19,7 @@ public class PostController {
     @PostMapping("/posts")
     public ResponseEntity<PostDto> create(@RequestBody PostDto dto) {
         try {
+            dto.setDate(PostDto.getCurrentFormattedDate());
             PostDto createdDto = postService.create(dto);
             return ResponseEntity.status(HttpStatus.OK).body(createdDto);
         } catch (Exception e) {

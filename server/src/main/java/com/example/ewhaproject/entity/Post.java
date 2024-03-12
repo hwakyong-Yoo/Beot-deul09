@@ -1,6 +1,5 @@
 package com.example.ewhaproject.entity;
 
-import com.example.ewhaproject.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -15,11 +14,10 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
-
-    @ManyToOne
-    @JoinColumn(name = "userId", nullable = true) // 외래 키 생성, User 엔터티의 기본 키(userId)와 매핑
-    private User user;
-
+    @Column
+    private String userId;
+    @Column
+    private String product;
     @Column
     private String keyword;
     @Column
@@ -35,7 +33,9 @@ public class Post {
     @Column
     private double price;
     @Column
-    private String date;     // 마감 기한
+    private String date;     // 작성일
+    @Column
+    private String deadline;
     @Column
     private String status;   // 이미지 업로드 URL
     @Column
@@ -43,6 +43,4 @@ public class Post {
     @Column
     private String account_holder;
 
-    public Post(Long postId, String name, String keyword, String img, String explanation, String sizeImg, String qna, int minParticipants, double price, String date, String status, String accountNum, String accountHolder) {
-    }
 }

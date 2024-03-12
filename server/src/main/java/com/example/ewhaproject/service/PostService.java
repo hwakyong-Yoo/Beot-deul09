@@ -2,15 +2,14 @@ package com.example.ewhaproject.service;
 
 import com.example.ewhaproject.dto.PostDto;
 import com.example.ewhaproject.entity.Post;
-import com.example.ewhaproject.entity.User;
 import com.example.ewhaproject.repository.PostRepository;
 import com.example.ewhaproject.repository.UserRepository;
-import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.beans.Transient;
-
+@Slf4j
 @Service
 public class PostService {
     @Autowired
@@ -19,16 +18,11 @@ public class PostService {
     @Autowired
     private UserRepository userRepository;
 
-    @Transactional
+
     public PostDto create(PostDto dto) {
-        // 이미지 경로가 null이면 생성 불가
-        if (dto.getImg() == null) {
-            throw new IllegalArgumentException("Post 생성 실패! 이미지 경로는 null일 수 없습니다.");
-        }
-        User user = userRepository.findById(dto.getUserID())
-                .orElseThrow(() -> new IllegalArgumentException("Post 생성 실패! User not found"));
-        Post post = dto.toEntity(user);
+        Post post = dto.toEntity();
         Post createdPost = postRepository.save(post);
-        return PostDto.createPostDto(createdPost);
+        log.info("DB에 게시물 저장 성공");
+        return PostDto.createdPostDto(createdPost);
     }
 }
