@@ -1,7 +1,6 @@
 package com.example.ewhaproject.dto;
 
 import com.example.ewhaproject.entity.Post;
-import com.example.ewhaproject.entity.User;
 import lombok.*;
 
 import java.time.LocalDateTime;
