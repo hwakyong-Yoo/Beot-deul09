@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -43,5 +44,13 @@ public class PostService {
             post.setDate(currentFormattedDate);
             postRepository.save(post);
         }
+    }
+
+    public List<Post> findPostsByUserId(String userId) {
+        return postRepository.findByUserId(userId);
+    }
+
+    public Optional<Post> getPostByPostId(Long postId) {
+        return postRepository.findById(postId);
     }
 }
