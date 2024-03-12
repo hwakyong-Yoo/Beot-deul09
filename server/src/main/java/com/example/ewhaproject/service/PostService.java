@@ -34,4 +34,14 @@ public class PostService {
                 .map(PostDto::createdPostDto)
                 .collect(Collectors.toList());
     }
+
+    public void updatePostToLatest(Long postId) { //끝올
+        Post post = postRepository.findById(postId).orElse(null);
+
+        if (post != null) {
+            String currentFormattedDate = PostDto.getCurrentFormattedDate();
+            post.setDate(currentFormattedDate);
+            postRepository.save(post);
+        }
+    }
 }
