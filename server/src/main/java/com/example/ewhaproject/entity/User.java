@@ -16,12 +16,12 @@ import lombok.*;
 public class User {
     @Id
     @Column(name = "userId")
-    String userId;
+    private String userId;
 
     @Column
-    String password;
+    private String password;
 
     @Column
-    String name;
+    private String name;
 
 }
