@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Data
 @Getter
@@ -16,7 +17,7 @@ public class PostDto {
     private Long postId;
     private String userId;
     private String product;
-    private String keyword;
+    private List<String> keywords;
     private String img;
     private String explanation;     // 내용 (텍스트)
     private String size_img;
@@ -38,7 +39,7 @@ public class PostDto {
                 .postId(createdPost.getPostId())
                 .userId(createdPost.getUserId())
                 .product(createdPost.getProduct())
-                .keyword(createdPost.getKeyword())
+                .keywords(createdPost.getKeywords())
                 .img(createdPost.getImg())
                 .explanation(createdPost.getExplanation())
                 .size_img(createdPost.getSize_img())
@@ -58,7 +59,7 @@ public class PostDto {
                 postId,
                 userId,
                 product,
-                keyword,
+                keywords,
                 img,
                 explanation,
                 size_img,
