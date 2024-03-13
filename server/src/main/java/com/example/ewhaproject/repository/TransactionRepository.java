@@ -8,6 +8,11 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
+    @Query(value= "SELECT * " +
+            "FROM tb_transaction t " +
+            "WHERE t.post_id = :postId", nativeQuery = true)
+    List<Transaction> findByPostId(@Param("postId") Long postId);
+
     @Query(value = "SELECT t.* " +
             "FROM tb_transaction t " +
             "WHERE t.user_id = :userId", nativeQuery = true)

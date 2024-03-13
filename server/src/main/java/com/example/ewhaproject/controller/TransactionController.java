@@ -27,6 +27,16 @@ public class TransactionController {
         }
     }
 
+    @GetMapping("/transactions/{postId}") //상품 구매자 확인하기
+    public ResponseEntity<List<TransactionDto>> transactions(@PathVariable long postId) {
+        try {
+            List<TransactionDto> transactionDtos = transactionService.getTransactionsByPostId(postId);
+            return ResponseEntity.status(HttpStatus.OK).body(transactionDtos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @GetMapping("/products/buyer") // 내가 구매한 상품보기
     public ResponseEntity<List<Transaction>> myPurchases(HttpSession session) {
         if (session != null) {
