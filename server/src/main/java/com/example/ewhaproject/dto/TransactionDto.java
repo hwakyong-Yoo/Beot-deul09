@@ -15,6 +15,7 @@ public class TransactionDto {
     private long postId;
     private String amount;
     private String size;
+    private String status = "입금 미완료";
 
     public static TransactionDto createdTransactionDto(Transaction createdTransaction) {
         return TransactionDto.builder()
@@ -23,11 +24,12 @@ public class TransactionDto {
                 .postId(createdTransaction.getPostId())
                 .amount(createdTransaction.getAmount())
                 .size(createdTransaction.getSize())
+                .status(createdTransaction.getStatus())
                 .build();
     }
 
     public Transaction toEntity() {
-        return new Transaction (transaction_id, userId, postId, amount, size);
+        return new Transaction (transaction_id, userId, postId, amount, size, status);
     }
 }
 

@@ -27,5 +27,7 @@ public class Transaction {
     @Column
     String amount;
 
+    @Column
+    String status= "입금 미완료"; // 디폴트 값 , 총대가 입금확인 누르면 입금 완료로 바뀜
 
 }
