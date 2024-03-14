@@ -1,2 +1,52 @@
-const Main = () => {};
+import { React } from "react";
+import { useNavigate } from "react-router-dom";
+import { Container } from "../../Layout";
+import {
+  MainSearchForm,
+  SearchInput,
+  RecommendSection,
+  Title,
+  RecommendItem,
+  ItemWrapper,
+  RecruitBtn,
+} from "./MainStyle";
+
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+
+import Header from "../../components/Header";
+
+const Main = () => {
+  const navigate = useNavigate();
+  const handleSearchClick = () => {
+    navigate("/search");
+  };
+  const handleRecruitClick = () => {
+    navigate("/upload");
+  };
+
+  return (
+    <Container>
+      <Header />
+      <hr />
+      <MainSearchForm onClick={handleSearchClick}>
+        <SearchInput placeholder="검색어 입력" type="text" readOnly />
+        <FontAwesomeIcon
+          icon={faMagnifyingGlass}
+          style={{ color: "#85CC16" }}
+        />
+      </MainSearchForm>
+
+      <RecommendSection>
+        <Title>벗들을 위한 추천상품</Title>
+        <ItemWrapper>
+          <RecommendItem></RecommendItem>
+          <RecommendItem></RecommendItem>
+        </ItemWrapper>
+      </RecommendSection>
+
+      <RecruitBtn onClick={handleRecruitClick}>+ 공동구매 모집하기</RecruitBtn>
+    </Container>
+  );
+};
 export default Main;
