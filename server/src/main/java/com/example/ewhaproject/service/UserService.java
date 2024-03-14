@@ -57,4 +57,8 @@ public class UserService {
             return null;
         }
     }
+
+    public boolean isDuplicateUserId(String userId) {
+        return userRepository.findById(userId).isPresent();
+    }
 }
