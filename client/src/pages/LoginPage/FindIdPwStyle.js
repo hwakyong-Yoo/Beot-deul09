@@ -40,6 +40,38 @@ export const InputPwDiv = styled.div`
   align-items: flex-start;
 `;
 
+export const InputSignUpDiv = styled.div`
+  width: 305px;
+  height: 385px;
+  font-size: 15px;
+  border-radius: 0px 0px 15px 15px;
+  border: 1px solid #aeaeae;
+  padding: 30px 15px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+`;
+
+export const ConfirmWrapper = styled.div`
+  display: flex;
+  width: 305px;
+  justify-content: space-between;
+  align-items: baseline;
+`;
+
+export const ConfirmBtn = styled.button`
+  width: 120px;
+  height: 38px;
+  border-radius: 6px;
+  border: 1px solid #538800;
+  background-color: #ffffff;
+  cursor: pointer;
+
+  font-family: "Pretendard-Regular";
+  font-size: 13px;
+  color: #538800;
+`;
+
 export const FindInput = styled.input`
   width: 90%;
   border: none;
@@ -62,7 +94,13 @@ export const InputIdPw = styled.input`
   border-bottom: 1px solid #d9d9d9;
   margin-bottom: 24px;
 `;
-
+export const InputIdPwHalf = styled.input`
+  border: none;
+  width: 154px;
+  padding-bottom: 9px;
+  border-bottom: 1px solid #d9d9d9;
+  margin-bottom: 24px;
+`;
 export const FindIdBtn = styled.button`
   width: 304px;
   height: 38px;
