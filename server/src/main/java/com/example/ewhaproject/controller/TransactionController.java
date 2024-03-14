@@ -51,4 +51,14 @@ public class TransactionController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
+    @PostMapping("/purchase/checked/{transactionId}") //입금확인
+    public ResponseEntity<String> check(@PathVariable long transactionId) {
+        try {
+            transactionService.purchaseCheck(transactionId);
+            return new ResponseEntity<>("구매가 확인되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("구매확인 에러", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }
