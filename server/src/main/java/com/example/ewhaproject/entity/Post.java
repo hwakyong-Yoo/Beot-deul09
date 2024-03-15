@@ -43,7 +43,7 @@ public class Post {
     @Column
     private String chatroom_link; //오픈채팅방 링크
     @Column
-    private boolean status = true; //게시물 작성시 기본 값으로 진행중
+    private Boolean status = true; //게시물 작성시 기본 값으로 진행중
     @Column
     private String account_num;
     @Column
