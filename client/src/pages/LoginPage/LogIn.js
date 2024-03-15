@@ -19,8 +19,8 @@ const Login = () => {
   const idRef = useRef();
   const [id, setId] = useState("");
 
-  const pwRef = useRef();
-  const [pw, setPw] = useState("");
+  const passwordRef = useRef();
+  const [password, setPassword] = useState("");
 
   const [showPw, setShowPw] = useState(false);
 
@@ -33,8 +33,8 @@ const Login = () => {
   const handleSubmit = async () => {
     try {
       const response = await axios.post("http://localhost:80/user/login", {
-        username: id,
-        password: pw,
+        userId: id,
+        password: password,
       });
       console.log(response.data);
       navigate("/");
@@ -68,9 +68,9 @@ const Login = () => {
           <LoginInputForm>
             <LoginInput
               placeholder="비밀번호를 입력하세요."
-              value={pw}
-              ref={pwRef}
-              onChange={(e) => setPw(e.target.value)}
+              value={password}
+              ref={passwordRef}
+              onChange={(e) => setPassword(e.target.value)}
               type={showPw ? "text" : "password"}
             />
             <FontAwesomeIcon
