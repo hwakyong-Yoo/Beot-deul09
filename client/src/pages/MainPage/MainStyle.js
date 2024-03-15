@@ -5,7 +5,7 @@ export const MainSearchForm = styled.form`
   border-radius: 27px;
   display: flex;
   width: 310px;
-  height: 49px;
+  height: 46px;
   align-items: center;
   margin: 0 auto;
   padding-left: 20px;

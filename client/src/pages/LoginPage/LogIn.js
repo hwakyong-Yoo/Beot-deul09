@@ -13,6 +13,7 @@ import {
 } from "./LoginStyle";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import axios from "axios";
 
 const Login = () => {
   const idRef = useRef();
@@ -29,8 +30,17 @@ const Login = () => {
     setShowPw(!showPw);
   };
 
-  const handleSubmit = () => {
-    navigate("/");
+  const handleSubmit = async () => {
+    try {
+      const response = await axios.post("http://localhost:80/user/login", {
+        username: id,
+        password: pw,
+      });
+      console.log(response.data);
+      navigate("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   const handleSignUp = () => {
@@ -42,7 +52,7 @@ const Login = () => {
   };
   return (
     <Container>
-      <Header />
+      <Header headText={"벗들공구"} />
       <hr />
       <LoginWrapper>
         <LoginInputWrapper>

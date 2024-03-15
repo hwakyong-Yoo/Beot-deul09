@@ -11,7 +11,7 @@ export const LoginInputWrapper = styled.div`
   flex-direction: column;
   align-items: flex-end;
   width: 326px;
-  margin: 130px auto 14px;
+  margin: 90px auto 14px;
 `;
 
 export const LoginInputForm = styled.form`
@@ -21,7 +21,6 @@ export const LoginInputForm = styled.form`
   height: 64px;
   border: 2px solid #b2f100;
   border-radius: 20px;
-  cursor: pointer;
 
   margin-top: 27px;
   padding-left: 24px;
