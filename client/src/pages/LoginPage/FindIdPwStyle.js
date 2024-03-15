@@ -52,6 +52,8 @@ export const InputSignUpDiv = styled.div`
   h5 {
     margin: 0;
     margin-bottom: 10px;
+    font-size: 10px;
+    color: red;
   }
 `;
 

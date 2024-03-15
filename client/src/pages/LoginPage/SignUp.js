@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Header from "../../components/Header";
 import { Container } from "../../Layout";
 import axios from "axios";
@@ -24,21 +24,19 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const nameRef = useRef();
-  const idRef = useRef();
   const emailRef = useRef();
   const pwRef = useRef();
-  const checkPwRef = useRef();
+  const checkpwRef = useRef();
   const [birth, setBirth] = useState(new Date());
   const [age, setAge] = useState(0);
 
   const [user, setUser] = useState({
     id: "",
     password: "",
-    checkPw: "",
+    checkpw: "",
     name: "",
     email: "",
   });
-  const [pwMatch, setPwMatch] = useState(true);
 
   const handleChangeState = (e) => {
     const { name, value } = e.target;
@@ -50,11 +48,7 @@ const SignUp = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (user.id.length < 1) {
-      idRef.current.focus();
-      alert("입력 정보를 확인해주세요");
-      return;
-    }
+
     if (user.name.length < 1) {
       nameRef.current.focus();
       alert("입력 정보를 확인해주세요");
@@ -71,8 +65,8 @@ const SignUp = () => {
       return;
     }
 
-    if (user.password !== user.checkPw) {
-      checkPwRef.current.focus();
+    if (user.password !== user.checkpw) {
+      checkpwRef.current.focus();
       alert("입력 정보를 확인해주세요");
       return;
     }
@@ -91,11 +85,9 @@ const SignUp = () => {
       .then((response) => {
         console.log(response.data);
         navigate("/");
-        // 서버 응답에 따른 처리
       })
       .catch((error) => {
         console.error("Error:", error);
-        // 오류 처리
       });
   };
 
@@ -110,17 +102,23 @@ const SignUp = () => {
         <TitleDiv>회원가입</TitleDiv>
 
         <InputSignUpDiv>
-          <IdPwTitle>아이디</IdPwTitle>
+          <IdPwTitle>이메일</IdPwTitle>
           <ConfirmWrapper>
             <InputIdPwHalf
-              placeholder="아이디"
-              type="id"
-              name="id"
-              value={user.id}
-              ref={idRef}
-              onChange={handleChangeState}
+              placeholder="이메일"
+              type="email"
+              name="email"
+              value={user.email}
+              ref={emailRef}
+              onChange={(e) => {
+                handleChangeState(e);
+                setUser((prevUser) => ({
+                  ...prevUser,
+                  id: e.target.value.split("@")[0],
+                }));
+              }}
             />
-            <ConfirmBtn>아이디 중복 확인</ConfirmBtn>
+            <ConfirmBtn>이메일 인증 보내기</ConfirmBtn>
           </ConfirmWrapper>
 
           <PwMatchWrapper>
@@ -140,16 +138,16 @@ const SignUp = () => {
 
           <PwMatchWrapper>
             <IdPwTitle>비밀번호 확인</IdPwTitle>
-            {user.password !== user.checkPw && (
+            {user.password !== user.checkpw && (
               <h5>비밀번호가 일치하지 않습니다.</h5>
             )}
           </PwMatchWrapper>
           <InputIdPw
             placeholder="비밀번호 확인"
             type="password"
-            name="checkPw"
-            value={user.checkPw}
-            ref={checkPwRef}
+            name="checkpw"
+            value={user.checkpw}
+            ref={checkpwRef}
             onChange={handleChangeState}
           />
 
@@ -162,19 +160,6 @@ const SignUp = () => {
             ref={nameRef}
             onChange={handleChangeState}
           />
-
-          <IdPwTitle>이메일</IdPwTitle>
-          <ConfirmWrapper>
-            <InputIdPwHalf
-              placeholder="이메일"
-              type="email"
-              name="email"
-              value={user.email}
-              ref={emailRef}
-              onChange={handleChangeState}
-            />
-            <ConfirmBtn>이메일 인증 보내기</ConfirmBtn>
-          </ConfirmWrapper>
 
           <IdPwTitle>생년월일</IdPwTitle>
           <Calender>
