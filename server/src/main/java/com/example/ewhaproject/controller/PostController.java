@@ -50,6 +50,16 @@ public class PostController {
         }
     }
 
+    @PostMapping("/close/{postId}")
+    public ResponseEntity<String> closePost(@PathVariable Long postId){
+        try {
+            postService.closePost(postId);
+            return new ResponseEntity<>("공구가 마감되었습니다.", HttpStatus.OK);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
     @PostMapping("/bump/{postId}") //끝올
     public ResponseEntity<Void> bumpToLatest(@PathVariable Long postId) {
         try {

@@ -25,8 +25,9 @@ public class PostDto {
     private int min_participants;
     private double price;
     private String date; //작성일
-    private String deadline;
-    private String status;
+    private String deadline; //마감기한
+    private String chatroom_link; //오픈 채팅방 링크
+    private boolean status;
     private String account_num;
     private String account_holder;
 
@@ -48,7 +49,8 @@ public class PostDto {
                 .price(createdPost.getPrice())
                 .date(createdPost.getDate())
                 .deadline(createdPost.getDeadline())
-                .status(createdPost.getStatus())
+                .chatroom_link(createdPost.getChatroom_link())
+                .status(createdPost.isStatus())
                 .account_num(createdPost.getAccount_num())
                 .account_holder(createdPost.getAccount_holder())
                 .build();
@@ -68,6 +70,7 @@ public class PostDto {
                 price,
                 date,
                 deadline,
+                chatroom_link,
                 status,
                 account_num,
                 account_holder
