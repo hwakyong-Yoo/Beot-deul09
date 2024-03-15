@@ -31,7 +31,7 @@ const My = () => {
       <UserInfoWrapper>
         <UserInfo>
           <h3>{sessionStorage.getItem("name")}님, 안녕하세요!</h3>
-          <h5>2128014</h5>
+          <h5>{sessionStorage.getItem("userId")}</h5>
         </UserInfo>
         <NextBtn onClick={handleNextBtn}>
           <FontAwesomeIcon icon={faAngleRight} />
