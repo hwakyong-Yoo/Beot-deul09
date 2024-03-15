@@ -34,7 +34,7 @@ const FindIdPw = () => {
   };
   return (
     <Container>
-      <Header />
+      <Header headText={"벗들공구"} goHeadTitle={"/"} />
       <hr />
       <FindWrapper>
         <TitleDiv>아이디 찾기</TitleDiv>

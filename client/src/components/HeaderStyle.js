@@ -41,12 +41,6 @@ export const NavLink = styled(Link)`
   }
 `;
 
-export const NavBtn = styled.nav`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
-
 export const HButton = styled.button`
   height: 40px;
   border-radius: 4px;
@@ -64,4 +58,31 @@ export const HButton = styled.button`
     transition: all 0.2s ease-in-out;
     color: #9a9a9a;
   }
+`;
+
+export const LogoutWrapper = styled.div`
+  display: flex;
+`;
+
+export const LogoutBtn = styled.button`
+  background-color: #ffffff;
+  border: none;
+  font-family: "Pretendard-Regular";
+  font-size: 11px;
+  color: #707070;
+  cursor: pointer;
+`;
+
+export const UserBtn = styled.button`
+  background-color: #ffffff;
+  border: none;
+  font-family: "Pretendard-Regular";
+  font-size: 11px;
+  color: #707070;
+  text-decoration: underline solid #707070;
+  cursor: pointer;
+`;
+
+export const UserIconNav = styled.nav`
+  cursor: pointer;
 `;

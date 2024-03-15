@@ -96,7 +96,7 @@ const SignUp = () => {
 
   return (
     <Container>
-      <Header headText={"벗들공구"} />
+      <Header headText={"벗들공구"} goHeadTitle={"/"} />
       <hr />
       <FindWrapper>
         <TitleDiv>회원가입</TitleDiv>
