@@ -43,6 +43,19 @@ public class PostService {
             String currentFormattedDate = PostDto.getCurrentFormattedDate();
             post.setDate(currentFormattedDate);
             postRepository.save(post);
+        } else {
+            throw new IllegalArgumentException("포스트를 찾을 수 없습니다."); // 해당 ID의 포스트가 없을 경우 예외 처리
+        }
+    }
+
+    public void closePost(Long postId) {
+        Post post = postRepository.findById(postId).orElse(null);
+
+        if (post!=null) {
+            post.setStatus(false);
+            postRepository.save(post);
+        } else {
+            throw new IllegalArgumentException("포스트를 찾을 수 없습니다."); // 해당 ID의 포스트가 없을 경우 예외 처리
         }
     }
 

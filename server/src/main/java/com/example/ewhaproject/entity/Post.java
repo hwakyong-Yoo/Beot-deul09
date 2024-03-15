@@ -3,6 +3,7 @@ package com.example.ewhaproject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -38,9 +39,11 @@ public class Post {
     @Column
     private String date;     // 작성일
     @Column
-    private String deadline;
+    private String deadline; //마감 기한
     @Column
-    private String status;   // 이미지 업로드 URL
+    private String chatroom_link; //오픈채팅방 링크
+    @Column
+    private boolean status = true; //게시물 작성시 기본 값으로 진행중
     @Column
     private String account_num;
     @Column
