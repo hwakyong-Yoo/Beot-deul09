@@ -18,7 +18,11 @@ import {
 import { LoginBtn } from "./LoginStyle";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useNavigate } from "react-router";
+
 const SignUp = () => {
+  const navigate = useNavigate();
+
   const nameRef = useRef();
   const idRef = useRef();
   const emailRef = useRef();
@@ -86,6 +90,7 @@ const SignUp = () => {
       .post("http://localhost:80/user/create", userData)
       .then((response) => {
         console.log(response.data);
+        navigate("/");
         // 서버 응답에 따른 처리
       })
       .catch((error) => {
