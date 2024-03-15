@@ -44,6 +44,7 @@ export const NavLink = styled(Link)`
 export const NavBtn = styled.nav`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const HButton = styled.button`

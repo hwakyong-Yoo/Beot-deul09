@@ -38,7 +38,7 @@ const Main = () => {
 
   return (
     <Container>
-      <Header />
+      <Header headText={"벗들공구"} />
       <hr />
       <MainSearchForm onClick={handleSearchClick}>
         <SearchInput placeholder="검색어 입력" type="text" readOnly />
