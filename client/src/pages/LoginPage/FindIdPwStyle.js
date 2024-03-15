@@ -49,6 +49,16 @@ export const InputSignUpDiv = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  h5 {
+    margin: 0;
+    margin-bottom: 10px;
+  }
+`;
+
+export const PwMatchWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 `;
 
 export const ConfirmWrapper = styled.div`

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Header from "../../components/Header";
 import { Container } from "../../Layout";
 import axios from "axios";
@@ -13,6 +13,7 @@ import {
   ConfirmBtn,
   InputIdPwHalf,
   Calender,
+  PwMatchWrapper,
 } from "./FindIdPwStyle";
 import { LoginBtn } from "./LoginStyle";
 import DatePicker from "react-datepicker";
@@ -28,11 +29,12 @@ const SignUp = () => {
 
   const [user, setUser] = useState({
     id: "",
-    pw: "",
+    password: "",
     checkPw: "",
     name: "",
     email: "",
   });
+  const [pwMatch, setPwMatch] = useState(true);
 
   const handleChangeState = (e) => {
     const { name, value } = e.target;
@@ -43,49 +45,52 @@ const SignUp = () => {
   };
 
   const handleSubmit = (e) => {
-    if (user.name.length < 1) {
-      nameRef.current.focus();
-      return;
-    }
-
+    e.preventDefault();
     if (user.id.length < 1) {
       idRef.current.focus();
+      alert("입력 정보를 확인해주세요");
       return;
     }
-
+    if (user.name.length < 1) {
+      nameRef.current.focus();
+      alert("입력 정보를 확인해주세요");
+      return;
+    }
     if (user.email.length < 1) {
       emailRef.current.focus();
+      alert("입력 정보를 확인해주세요");
       return;
     }
-
     if (user.password.length < 8) {
       pwRef.current.focus();
+      alert("입력 정보를 확인해주세요");
       return;
     }
 
-    if (user.checkPw.length < 8) {
+    if (user.password !== user.checkPw) {
       checkPwRef.current.focus();
+      alert("입력 정보를 확인해주세요");
       return;
     }
-    e.preventDefault();
 
+    // 회원가입 정보와 나이(age)를 서버에 전송
     const userData = {
       userId: user.id,
       email: user.email,
-      password: user.pw,
+      password: user.password,
       name: user.name,
       age: age,
     };
 
     axios
-      .post("http://localhost:80/user/create", {
-        userData,
-      })
+      .post("http://localhost:80/user/create", userData)
       .then((response) => {
         console.log(response.data);
+        // 서버 응답에 따른 처리
       })
       .catch((error) => {
         console.error("Error:", error);
+        // 오류 처리
       });
   };
 
@@ -113,17 +118,27 @@ const SignUp = () => {
             <ConfirmBtn>아이디 중복 확인</ConfirmBtn>
           </ConfirmWrapper>
 
-          <IdPwTitle>비밀번호</IdPwTitle>
+          <PwMatchWrapper>
+            <IdPwTitle>비밀번호</IdPwTitle>
+            {user.password.length < 8 && (
+              <h5>비밀번호를 8자 이상 입력해주세요.</h5>
+            )}
+          </PwMatchWrapper>
           <InputIdPw
             placeholder="비밀번호"
             type="text"
-            name="pw"
-            value={user.pw}
+            name="password"
+            value={user.password}
             ref={pwRef}
             onChange={handleChangeState}
           />
 
-          <IdPwTitle>비밀번호 확인</IdPwTitle>
+          <PwMatchWrapper>
+            <IdPwTitle>비밀번호 확인</IdPwTitle>
+            {user.password !== user.checkPw && (
+              <h5>비밀번호가 일치하지 않습니다.</h5>
+            )}
+          </PwMatchWrapper>
           <InputIdPw
             placeholder="비밀번호 확인"
             type="password"
