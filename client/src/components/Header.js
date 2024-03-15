@@ -12,7 +12,7 @@ const Header = () => {
     if (isLoggedIn) {
       navigate("/my");
     } else {
-      navigate("/signin");
+      navigate("/login");
     }
   };
   return (
