@@ -1,5 +1,6 @@
 package com.example.ewhaproject.entity;
 
+import com.example.ewhaproject.dto.UserDto;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -30,4 +31,8 @@ public class User {
     @Column
     private String birth;
 
+    public void updateFromDto(UserDto userDto) { //회원 정보 수정
+        this.setPassword(userDto.getPassword());
+        this.setName(userDto.getName());
+    }
 }
