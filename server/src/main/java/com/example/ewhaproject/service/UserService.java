@@ -19,11 +19,9 @@ public class UserService {
     private UserRepository userRepository;
 
     public void registerUser(UserDto userDto) throws NoSuchAlgorithmException {
-        User user = userDto.toEntity();
-
         // SHA-256 사용해서 비밀번호 해시화
-        String hashedPassword = SHA256.encrypt(user.getPassword());
-        user.setPassword(hashedPassword);
+        String hashedPassword = SHA256.encrypt(userDto.getPassword());
+        User user = new User(userDto.getUserId(), userDto.getEmail(), hashedPassword, userDto.getName(), userDto.getAge());
 
         userRepository.save(user);
         log.info("DB에 회원 저장 성공");
@@ -76,6 +74,16 @@ public class UserService {
             existingUser.updateFromDto(userDto);
             userRepository.save(existingUser);
         } else {
+            throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
+        }
+    }
+
+    public String getNameById(String userId) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            return userOptional.get().getName();
+        } else {
+            // 사용자를 찾을 수 없는 경우에 대한 처리를 추가하세요.
             throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
         }
     }
