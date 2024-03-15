@@ -3,15 +3,11 @@ package com.example.ewhaproject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
 @Getter
-@Setter
 @Table(name="TB_POST")
 public class Post {
     @Id
@@ -21,9 +17,6 @@ public class Post {
     private String userId;
     @Column
     private String product;
-    @ElementCollection
-    @Column(name = "keyword")
-    private List<String> keywords;
     @Column
     private String img;
     @Column
@@ -49,4 +42,6 @@ public class Post {
     @Column
     private String account_holder;
 
+    public void updateDate(String currentFormattedDate) { this.date = currentFormattedDate; }
+    public void close() { this.status = false;}
 }

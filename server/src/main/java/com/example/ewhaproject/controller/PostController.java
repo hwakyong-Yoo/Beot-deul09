@@ -3,6 +3,7 @@ package com.example.ewhaproject.controller;
 import com.example.ewhaproject.dto.PostDto;
 import com.example.ewhaproject.entity.Post;
 import com.example.ewhaproject.service.PostService;
+import com.example.ewhaproject.service.UserService;
 import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,12 +20,33 @@ public class PostController {
     @Autowired
     private PostService postService;
 
+    @Autowired
+    private UserService userService;
+
     @PostMapping("/posts") // 게시물 작성
-    public ResponseEntity<PostDto> create(@RequestBody PostDto dto) {
+    public ResponseEntity<PostDto> create(@RequestBody PostDto postDto, HttpSession session) {
         try {
-            dto.setDate(PostDto.getCurrentFormattedDate());
-            PostDto createdDto = postService.create(dto);
+            // 세션에서 userId 가져오기
+            String userId = (String) session.getAttribute("userId");
+            String name = userService.getNameById(userId);
+            log.info("현재 로그인한 사용자의 id: {}", userId);
+            postDto.setUserId(userId);
+            postDto.setDate(PostDto.getCurrentFormattedDate());
+
+            // 키워드를 게시물과 연결하기 위해 키워드를 생성하고 연결
+            PostDto createdDto = postService.create(postDto);
+            createdDto.setKeywords(postDto.getKeywords());
             return ResponseEntity.status(HttpStatus.OK).body(createdDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PutMapping("/post/edit/{postId}") // 게시물 수정
+    public ResponseEntity<PostDto> updatePost(@PathVariable long postId, @RequestBody PostDto postDto) {
+        try {
+            postService.updatePostContent(postDto, postId);
+            return ResponseEntity.status(HttpStatus.OK).body(postDto);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -41,16 +63,22 @@ public class PostController {
     }
 
     @GetMapping("/posts/{postId}") //상세 게시물 조회
-    public ResponseEntity<Optional<Post>> getDetailPosts(@PathVariable Long postId) {
+    public ResponseEntity<PostDto> getDetailPosts(@PathVariable Long postId) {
         try {
-            Optional<Post> postDto = postService.getPostByPostId(postId);
-            return ResponseEntity.ok(postDto);
+            Optional<Post> postOptional = postService.getPostByPostId(postId);
+            if (postOptional.isPresent()) {
+                Post post = postOptional.get();
+                PostDto postDto = PostDto.createdPostDto(post);
+                return ResponseEntity.ok(postDto);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-    @PostMapping("/close/{postId}")
+    @PostMapping("/close/{postId}") //공구 마감
     public ResponseEntity<String> closePost(@PathVariable Long postId){
         try {
             postService.closePost(postId);
