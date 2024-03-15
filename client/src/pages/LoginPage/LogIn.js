@@ -53,6 +53,13 @@ const Login = () => {
     }
   };
 
+  const handleEnter = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleLogin();
+    }
+  };
+
   const handleSignUp = () => {
     navigate("/signup");
   };
@@ -74,6 +81,7 @@ const Login = () => {
               ref={idRef}
               onChange={(e) => setId(e.target.value)}
               type="text"
+              onKeyDown={handleEnter}
             />
           </LoginInputForm>
           <LoginInputForm>
@@ -83,6 +91,7 @@ const Login = () => {
               ref={passwordRef}
               onChange={(e) => setPassword(e.target.value)}
               type={showPw ? "text" : "password"}
+              onKeyDown={handleEnter}
             />
             <FontAwesomeIcon
               icon={faEyeSlash}
@@ -90,7 +99,7 @@ const Login = () => {
               onClick={toggleShowPw}
             />
           </LoginInputForm>
-          <FindIdPw onClick={handleFindIdPw}>아이디 / 비밀번호 찾기</FindIdPw>
+          <FindIdPw onClick={handleFindIdPw}>비밀번호 재설정</FindIdPw>
           <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
         </LoginInputWrapper>
         <GoSignup onClick={handleSignUp}>계정이 없으신가요? 회원가입</GoSignup>

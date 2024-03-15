@@ -17,7 +17,7 @@ import {
   InputIdPwHalf,
   Calender,
   PwMatchWrapper,
-} from "./FindIdPwStyle";
+} from "./FindPwStyle";
 import { LoginBtn } from "./LoginStyle";
 import { Container } from "../../Layout";
 
