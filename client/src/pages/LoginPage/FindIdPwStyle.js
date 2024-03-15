@@ -42,7 +42,6 @@ export const InputPwDiv = styled.div`
 
 export const InputSignUpDiv = styled.div`
   width: 305px;
-  height: 385px;
   font-size: 15px;
   border-radius: 0px 0px 15px 15px;
   border: 1px solid #aeaeae;
@@ -120,4 +119,10 @@ export const CancelBtn = styled.button`
   border: 1px solid #538800;
   border-radius: 20px;
   cursor: pointer;
+`;
+
+export const Calender = styled.div`
+  input {
+    color: grey;
+  }
 `;
