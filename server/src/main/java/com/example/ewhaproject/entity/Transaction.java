@@ -16,7 +16,7 @@ public class Transaction {
     private Long transaction_id;
 
     @Column
-    private String userId;
+    private String name;
 
     @Column
     private Long postId;
