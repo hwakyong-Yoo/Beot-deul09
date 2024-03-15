@@ -16,11 +16,12 @@ import { faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 
 const Login = () => {
-  const idRef = useRef();
   const [id, setId] = useState("");
+  const [password, setPassword] = useState("");
+  const [loginCheck, setLoginCheck] = useState(false);
 
-  const pwRef = useRef();
-  const [pw, setPw] = useState("");
+  const idRef = useRef();
+  const passwordRef = useRef();
 
   const [showPw, setShowPw] = useState(false);
 
@@ -30,16 +31,32 @@ const Login = () => {
     setShowPw(!showPw);
   };
 
-  const handleSubmit = async () => {
+  const handleLogin = async () => {
     try {
       const response = await axios.post("http://localhost:80/user/login", {
-        username: id,
-        password: pw,
+        userId: id,
+        password: password,
       });
       console.log(response.data);
-      navigate("/");
+      if (response.status === 200) {
+        setLoginCheck(true);
+        sessionStorage.setItem("name", response.data.name);
+        sessionStorage.setItem("userId", response.data.userId);
+        navigate("/");
+        console.log("로그인성공:");
+      } else {
+        setLoginCheck(false);
+      }
     } catch (error) {
       console.error("Login failed:", error);
+      alert("이메일 혹은 비밀번호가 틀렸습니다.");
+    }
+  };
+
+  const handleEnter = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      handleLogin();
     }
   };
 
@@ -50,9 +67,10 @@ const Login = () => {
   const handleFindIdPw = () => {
     navigate("/findidpw");
   };
+
   return (
     <Container>
-      <Header headText={"벗들공구"} />
+      <Header headText={"벗들공구"} goHeadTitle={"/"} />
       <hr />
       <LoginWrapper>
         <LoginInputWrapper>
@@ -63,15 +81,17 @@ const Login = () => {
               ref={idRef}
               onChange={(e) => setId(e.target.value)}
               type="text"
+              onKeyDown={handleEnter}
             />
           </LoginInputForm>
           <LoginInputForm>
             <LoginInput
               placeholder="비밀번호를 입력하세요."
-              value={pw}
-              ref={pwRef}
-              onChange={(e) => setPw(e.target.value)}
+              value={password}
+              ref={passwordRef}
+              onChange={(e) => setPassword(e.target.value)}
               type={showPw ? "text" : "password"}
+              onKeyDown={handleEnter}
             />
             <FontAwesomeIcon
               icon={faEyeSlash}
@@ -79,8 +99,8 @@ const Login = () => {
               onClick={toggleShowPw}
             />
           </LoginInputForm>
-          <FindIdPw onClick={handleFindIdPw}>아이디 / 비밀번호 찾기</FindIdPw>
-          <LoginBtn onClick={handleSubmit}>로그인</LoginBtn>
+          <FindIdPw onClick={handleFindIdPw}>비밀번호 재설정</FindIdPw>
+          <LoginBtn onClick={handleLogin}>로그인</LoginBtn>
         </LoginInputWrapper>
         <GoSignup onClick={handleSignUp}>계정이 없으신가요? 회원가입</GoSignup>
       </LoginWrapper>
