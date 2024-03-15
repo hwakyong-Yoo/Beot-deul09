@@ -27,7 +27,7 @@ public class PostDto {
     private String date; //작성일
     private String deadline; //마감기한
     private String chatroom_link; //오픈 채팅방 링크
-    private boolean status;
+    private Boolean status = true;
     private String account_num;
     private String account_holder;
 
@@ -50,7 +50,7 @@ public class PostDto {
                 .date(createdPost.getDate())
                 .deadline(createdPost.getDeadline())
                 .chatroom_link(createdPost.getChatroom_link())
-                .status(createdPost.isStatus())
+                .status(createdPost.getStatus())
                 .account_num(createdPost.getAccount_num())
                 .account_holder(createdPost.getAccount_holder())
                 .build();
