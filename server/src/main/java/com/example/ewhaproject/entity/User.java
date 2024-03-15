@@ -29,7 +29,7 @@ public class User {
     private String name;
 
     @Column
-    private String birth;
+    private String age;
 
     public void updateFromDto(UserDto userDto) { //회원 정보 수정
         this.setPassword(userDto.getPassword());
