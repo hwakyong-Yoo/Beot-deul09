@@ -5,6 +5,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @Data
 @Getter
@@ -16,7 +17,7 @@ public class PostDto {
     private Long postId;
     private String userId;
     private String product;
-    private String keyword;
+    private List<String> keywords;
     private String img;
     private String explanation;     // 내용 (텍스트)
     private String size_img;
@@ -24,8 +25,9 @@ public class PostDto {
     private int min_participants;
     private double price;
     private String date; //작성일
-    private String deadline;
-    private String status;
+    private String deadline; //마감기한
+    private String chatroom_link; //오픈 채팅방 링크
+    private Boolean status = true;
     private String account_num;
     private String account_holder;
 
@@ -38,7 +40,7 @@ public class PostDto {
                 .postId(createdPost.getPostId())
                 .userId(createdPost.getUserId())
                 .product(createdPost.getProduct())
-                .keyword(createdPost.getKeyword())
+                .keywords(createdPost.getKeywords())
                 .img(createdPost.getImg())
                 .explanation(createdPost.getExplanation())
                 .size_img(createdPost.getSize_img())
@@ -47,6 +49,7 @@ public class PostDto {
                 .price(createdPost.getPrice())
                 .date(createdPost.getDate())
                 .deadline(createdPost.getDeadline())
+                .chatroom_link(createdPost.getChatroom_link())
                 .status(createdPost.getStatus())
                 .account_num(createdPost.getAccount_num())
                 .account_holder(createdPost.getAccount_holder())
@@ -58,7 +61,7 @@ public class PostDto {
                 postId,
                 userId,
                 product,
-                keyword,
+                keywords,
                 img,
                 explanation,
                 size_img,
@@ -67,6 +70,7 @@ public class PostDto {
                 price,
                 date,
                 deadline,
+                chatroom_link,
                 status,
                 account_num,
                 account_holder

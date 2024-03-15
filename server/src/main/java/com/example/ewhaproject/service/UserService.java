@@ -57,4 +57,26 @@ public class UserService {
             return null;
         }
     }
+
+    public boolean isDuplicateUserId(String userId) {
+        return userRepository.findById(userId).isPresent();
+    }
+
+    public void updateUserInformation(UserDto userDto, String userId) throws NoSuchAlgorithmException {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            log.info("해당 사용자 :" + userId);
+            User existingUser = userOptional.get();
+
+            //새로운 비밀번호 해시화하고 저장
+            String hashedPassword = SHA256.encrypt(userDto.getPassword());
+            userDto.setPassword(hashedPassword);
+
+            // 새로운 사용자 정보로 기존 사용자 엔티티를 업데이트합니다.
+            existingUser.updateFromDto(userDto);
+            userRepository.save(existingUser);
+        } else {
+            throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
+        }
+    }
 }
