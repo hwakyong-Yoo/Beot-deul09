@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import Header from "../../components/Header";
 import { Container } from "../../Layout";
+import axios from "axios";
+
 import {
   FindWrapper,
   TitleDiv,
@@ -10,15 +12,19 @@ import {
   ConfirmWrapper,
   ConfirmBtn,
   InputIdPwHalf,
+  Calender,
 } from "./FindIdPwStyle";
 import { LoginBtn } from "./LoginStyle";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 const SignUp = () => {
   const nameRef = useRef();
   const idRef = useRef();
   const emailRef = useRef();
   const pwRef = useRef();
   const checkPwRef = useRef();
+  const [birth, setBirth] = useState(new Date());
+  const [age, setAge] = useState(0);
 
   const [user, setUser] = useState({
     id: "",
@@ -52,21 +58,43 @@ const SignUp = () => {
       return;
     }
 
-    if (user.password.length < 1) {
+    if (user.password.length < 8) {
       pwRef.current.focus();
       return;
     }
 
-    if (user.checkPw.length < 1) {
+    if (user.checkPw.length < 8) {
       checkPwRef.current.focus();
       return;
     }
-    alert("회원가입이 완료되었습니다.");
+    e.preventDefault();
+
+    const userData = {
+      userId: user.id,
+      email: user.email,
+      password: user.pw,
+      name: user.name,
+      age: age,
+    };
+
+    axios
+      .post("http://localhost:80/user/create", {
+        userData,
+      })
+      .then((response) => {
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
+
+  console.log("사용자 정보:", user);
+  console.log("생년월일:", age);
 
   return (
     <Container>
-      <Header />
+      <Header headText={"벗들공구"} />
       <hr />
       <FindWrapper>
         <TitleDiv>회원가입</TitleDiv>
@@ -127,8 +155,25 @@ const SignUp = () => {
             />
             <ConfirmBtn>이메일 인증 보내기</ConfirmBtn>
           </ConfirmWrapper>
+
+          <IdPwTitle>생년월일</IdPwTitle>
+          <Calender>
+            <DatePicker
+              selected={birth}
+              onChange={(date) => {
+                setBirth(date);
+                setAge(new Date().getFullYear() - date.getFullYear());
+              }}
+              dateFormat="yyyy-MM-dd"
+              showYearDropdown
+              showMonthDropdown
+              scrollableYearDropdown
+              yearDropdownItemNumber={30}
+              maxDate={new Date()}
+            />
+          </Calender>
         </InputSignUpDiv>
-        <LoginBtn onClick={handleSubmit}>로그인</LoginBtn>
+        <LoginBtn onClick={handleSubmit}>회원가입</LoginBtn>
       </FindWrapper>
     </Container>
   );
