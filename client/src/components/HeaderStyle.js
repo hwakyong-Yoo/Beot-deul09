@@ -4,9 +4,17 @@ import { NavLink as Link } from "react-router-dom";
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: 336px;
   margin: 24px auto 13px;
+`;
+
+export const HeaderCenter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 336px;
+  margin: 19px auto 13px;
 `;
 
 export const LogoWrapper = styled.div`
