@@ -3,6 +3,8 @@ package com.example.ewhaproject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
@@ -18,8 +20,9 @@ public class Post {
     private String userId;
     @Column
     private String product;
-    @Column
-    private String keyword;
+    @ElementCollection
+    @Column(name = "keyword")
+    private List<String> keywords;
     @Column
     private String img;
     @Column

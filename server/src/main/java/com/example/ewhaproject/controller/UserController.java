@@ -8,10 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -40,6 +37,25 @@ public class UserController {
             response.put("statusCode", 500);
             return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/userId/exists") //아이디 중복 체크
+    public ResponseEntity<Map<String, Object>> userIdDuplicate(@RequestBody String userId) {
+        Map<String, Object> response = new HashMap<>();
+
+        if (userService.isDuplicateUserId(userId)) {
+            log.error("아이디가 이미 존재합니다.");
+            response.put("msg", "이미 사용중인 아이디입니다.");
+            response.put("statusCode", 400);
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+        else {
+            log.info("사용 가능한 아이디입니다.");
+            response.put("msg", "사용 가능한 아이디입니다.");
+            response.put("statusCode", 200);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+        }
+
     }
 
     @PostMapping("/user/login") //로그인

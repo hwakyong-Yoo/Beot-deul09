@@ -11,9 +11,10 @@ import lombok.*;
 @AllArgsConstructor
 public class UserDto {
     private String userId;
+    private String email;
     private String password;
     private String name;
     public User toEntity() {
-        return new User( userId, password, name );
+        return new User( userId, email, password, name );
     }
 }
