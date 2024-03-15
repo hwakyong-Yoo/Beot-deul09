@@ -133,8 +133,16 @@ export const CancelBtn = styled.button`
   cursor: pointer;
 `;
 
-export const Calender = styled.div`
+export const Calender = styled.label`
+  display: flex;
+  border-bottom: 1px solid #d9d9d9;
+  padding: 0 0 5px 10px;
+  align-items: center;
+
   input {
     color: grey;
+    border: none;
+    width: 270px;
+    margin-left: 10px;
   }
 `;

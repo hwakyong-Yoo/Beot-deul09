@@ -1,8 +1,11 @@
 import { useState, useRef } from "react";
-import Header from "../../components/Header";
-import { Container } from "../../Layout";
+import { useNavigate } from "react-router";
 import axios from "axios";
-
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCalendarDays } from "@fortawesome/free-solid-svg-icons";
+import Header from "../../components/Header";
 import {
   FindWrapper,
   TitleDiv,
@@ -16,9 +19,7 @@ import {
   PwMatchWrapper,
 } from "./FindIdPwStyle";
 import { LoginBtn } from "./LoginStyle";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from "react-router";
+import { Container } from "../../Layout";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -163,6 +164,10 @@ const SignUp = () => {
 
           <IdPwTitle>생년월일</IdPwTitle>
           <Calender>
+            <FontAwesomeIcon
+              icon={faCalendarDays}
+              style={{ color: "#A4A4A4" }}
+            />
             <DatePicker
               selected={birth}
               onChange={(date) => {
