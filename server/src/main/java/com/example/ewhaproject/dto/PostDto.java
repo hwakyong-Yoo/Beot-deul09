@@ -17,7 +17,6 @@ public class PostDto {
     private Long postId;
     private String userId;
     private String product;
-    private List<String> keywords;
     private String img;
     private String explanation;     // 내용 (텍스트)
     private String size_img;
@@ -25,6 +24,7 @@ public class PostDto {
     private int min_participants;
     private double price;
     private String date; //작성일
+    private List<String> keywords; // 키워드 정보를 담을 리스트
     private String deadline; //마감기한
     private String chatroom_link; //오픈 채팅방 링크
     private Boolean status = true;
@@ -40,7 +40,6 @@ public class PostDto {
                 .postId(createdPost.getPostId())
                 .userId(createdPost.getUserId())
                 .product(createdPost.getProduct())
-                .keywords(createdPost.getKeywords())
                 .img(createdPost.getImg())
                 .explanation(createdPost.getExplanation())
                 .size_img(createdPost.getSize_img())
@@ -61,7 +60,6 @@ public class PostDto {
                 postId,
                 userId,
                 product,
-                keywords,
                 img,
                 explanation,
                 size_img,
