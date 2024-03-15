@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
 import { useNavigate } from "react-router-dom";
 
-const Header = () => {
+const Header = ({ headText }) => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -26,7 +26,7 @@ const Header = () => {
           />
         </NavLink>
         <NavLink to="/" activestyle="true">
-          벗들공구
+          {headText}
         </NavLink>
       </LogoWrapper>
 
