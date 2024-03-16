@@ -8,8 +8,7 @@ import {
   LogoutBtn,
   UserIconNav,
 } from "./HeaderStyle.js";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCircleUser } from "@fortawesome/free-regular-svg-icons";
+
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -59,12 +58,7 @@ const Header = ({ headText, goHeadTitle }) => {
         </LogoutWrapper>
       ) : (
         <UserIconNav>
-          <FontAwesomeIcon
-            icon={faCircleUser}
-            size="xl"
-            style={{ color: "#B8BDB9" }}
-            onClick={handleUserClick}
-          />
+          <LogoutBtn onClick={handleUserClick}>로그인</LogoutBtn>
         </UserIconNav>
       )}
     </HeaderWrapper>

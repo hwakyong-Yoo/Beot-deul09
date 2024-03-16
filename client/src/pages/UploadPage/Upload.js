@@ -67,17 +67,15 @@ const Upload = () => {
           {images.length} / 5
         </ImgUpload>
 
-        <ImageUl>
-          {images.map((image, index) => (
-            <ImgList key={index}>
-              <img
-                src={image}
-                alt={`Uploaded ${index}`}
-                style={{ maxWidth: "100%" }}
-              />
-            </ImgList>
-          ))}
-        </ImageUl>
+        {images.map((image, index) => (
+          <ImgList key={index}>
+            <img
+              src={image}
+              alt={`Uploaded ${index}`}
+              style={{ maxWidth: "100%" }}
+            />
+          </ImgList>
+        ))}
       </ImgUploadWrapper>
 
       <UploadTitleWrapper>
