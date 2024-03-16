@@ -9,6 +9,15 @@ import {
 import { MainSearchForm, SearchInput, SearchWrapper } from "./SearchStyle";
 import { Container } from "../../Layout";
 import Header from "../../components/Header";
+import {
+  UploadTitleWrapper,
+  KeywordWrapper,
+  Category,
+  Keywords,
+  CategoryWrapper,
+  KeyWrapper,
+} from "../UploadPage/UploadStyle";
+import keywordList from "../UploadPage/keywordList";
 
 const Search = () => {
   const navigate = useNavigate();
@@ -28,7 +37,7 @@ const Search = () => {
   };
   return (
     <Container>
-      <Header />
+      <Header headText={"벗들공구"} />
       <SearchWrapper>
         <FontAwesomeIcon icon={faAngleLeft} onClick={handleBackClick} />
         <MainSearchForm onSubmit={handleSubmit}>
@@ -48,6 +57,21 @@ const Search = () => {
           />
         </MainSearchForm>
       </SearchWrapper>
+
+      <UploadTitleWrapper>
+        <h3>추천 검색어</h3>
+        <CategoryWrapper>
+          {keywordList.map((category, index) => (
+            <KeyWrapper key={index}>
+              <KeywordWrapper>
+                {Object.values(category)[0].map((keyword, keyIndex) => (
+                  <Keywords key={keyIndex}>{keyword}</Keywords>
+                ))}
+              </KeywordWrapper>
+            </KeyWrapper>
+          ))}
+        </CategoryWrapper>
+      </UploadTitleWrapper>
     </Container>
   );
 };

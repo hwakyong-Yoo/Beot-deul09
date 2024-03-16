@@ -33,15 +33,15 @@ const FindPw = () => {
     };
 
     axios
-      .put("http://localhost:80/user/find/password", userData)
-      .then((response) => {
-        console.log(response.data);
+      .post("http://localhost:80/user/find/password", userData)
+      .then(() => {
         alert("이메일 주소로 임시 비밀번호가 전송되었습니다.");
         navigate("/login");
       })
       .catch((error) => {
         console.error("Error:", error);
         alert("이름 또는 이메일 주소를 다시 확인해주세요.");
+        console.log(userData);
       });
   };
 
