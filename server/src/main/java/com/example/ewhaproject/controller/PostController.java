@@ -2,6 +2,7 @@ package com.example.ewhaproject.controller;
 
 import com.example.ewhaproject.dto.PostDto;
 import com.example.ewhaproject.entity.Post;
+import com.example.ewhaproject.service.KeywordService;
 import com.example.ewhaproject.service.PostService;
 import com.example.ewhaproject.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -19,9 +20,10 @@ import java.util.Optional;
 public class PostController {
     @Autowired
     private PostService postService;
-
     @Autowired
     private UserService userService;
+    @Autowired
+    private KeywordService keywordService;
 
     @PostMapping("/posts") // 게시물 작성
     public ResponseEntity<PostDto> create(@RequestBody PostDto postDto, HttpSession session) {
@@ -55,8 +57,8 @@ public class PostController {
     @GetMapping("/posts") //전체 게시물 조회
     public ResponseEntity<List<PostDto>> getAllPosts() {
         try {
-            List<PostDto> postDto = postService.getAllPosts();
-            return ResponseEntity.ok(postDto);
+            List<PostDto> postDtoLists = postService.getAllPosts();
+            return ResponseEntity.ok(postDtoLists);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -69,6 +71,8 @@ public class PostController {
             if (postOptional.isPresent()) {
                 Post post = postOptional.get();
                 PostDto postDto = PostDto.createdPostDto(post);
+                List<String> keywords = keywordService.findKeywordsByPostId(postId);
+                postDto.setKeywords(keywords);
                 return ResponseEntity.ok(postDto);
             } else {
                 return ResponseEntity.notFound().build();
