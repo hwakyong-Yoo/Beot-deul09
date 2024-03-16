@@ -25,7 +25,7 @@ const ChangePw = () => {
   const checkChangePwRef = useRef();
   const [checkChangePw, setCheckChangePw] = useState("");
 
-  const handleChange = async (e) => {
+  const handleChangeBtn = async (e) => {
     e.preventDefault();
 
     if (changePw.length < 8) {
@@ -92,7 +92,7 @@ const ChangePw = () => {
             onChange={(e) => setCheckChangePw(e.target.value)}
           />
         </InputPwDiv>
-        <FindPwBtn onClick={handleChange}>비밀번호 재설정</FindPwBtn>
+        <FindPwBtn onClick={handleChangeBtn}>비밀번호 재설정</FindPwBtn>
         <CancelBtn onClick={handleCancel}>취소</CancelBtn>
       </FindWrapper>
     </Container>

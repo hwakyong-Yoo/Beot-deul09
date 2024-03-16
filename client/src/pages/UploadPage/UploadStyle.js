@@ -57,10 +57,11 @@ export const RemoveBtn = styled.button`
 `;
 
 export const UploadTitleWrapper = styled.div`
-  margin: 20px 0 0 19px;
+  margin: 20px 19px;
   h3 {
     font-size: 15px;
     color: #004916;
+    margin-bottom: 7px;
   }
 `;
 
@@ -70,4 +71,58 @@ export const TitleInput = styled.input`
   border-radius: 9px;
   border: 1px solid #a4a4a4;
   padding-left: 13px;
+  margin-bottom: 11px;
+`;
+
+export const CategoryWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+export const KeyWrapper = styled.div`
+  margin-bottom: 8px;
+`;
+
+export const KeywordWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 8px;
+`;
+
+export const Category = styled.span`
+  font-size: 12px;
+  color: #538800;
+`;
+
+export const Keywords = styled.button`
+  font-family: "Pretendard-Regular";
+  color: #787878;
+  font-size: 13px;
+  border-radius: 22px;
+  border: 1px solid #a4a4a4;
+  background-color: transparent;
+  cursor: pointer;
+  margin: 0 9px 7px 0;
+  padding: 5px 11px;
+
+  ${({ selected }) =>
+    selected &&
+    `
+      color: #ffffff;
+      background-color: #85CC16;
+      border: none;
+    `}
+`;
+
+export const QuestionWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  color: #ffffff;
+  span {
+    background-color: #85cc16;
+    border-radius: 14px;
+    margin-bottom: 8px;
+    padding: 5px 8px;
+    font-size: 15px;
+  }
 `;
