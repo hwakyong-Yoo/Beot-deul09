@@ -6,7 +6,6 @@ import com.example.ewhaproject.entity.Post;
 import com.example.ewhaproject.service.KeywordService;
 import com.example.ewhaproject.service.PostService;
 import com.example.ewhaproject.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -101,16 +100,14 @@ public class PostController {
     }
 
     @GetMapping("/products/seller") // 자신의 판매상품 확인
-    public ResponseEntity<List<PostDto>> getPostByUserId(HttpSession session) {
-        if (session != null) {
-            // 세션에서 userId 가져오기
-            String userId = (String) session.getAttribute("userId");
+    public ResponseEntity<List<PostDto>> getPostByUserId(@RequestHeader String userId) {
+        try {
             log.info("현재 로그인한 사용자의 id: {}", userId);
 
             // userId를 이용하여 작성된 post들을 가져오는 로직 추가
             List<PostDto> myProducts = postService.findPostsByUserId(userId);
             return ResponseEntity.status(HttpStatus.OK).body(myProducts);
-        } else {
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
