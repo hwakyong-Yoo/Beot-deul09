@@ -73,14 +73,17 @@ public class PostService {
         }
     }
 
-    public void updatePostContent(PostDto postDto, long postId) {
+    public PostDto updatePostContent(PostDto postDto, long postId) {
         Optional<Post> postOptional = postRepository.findById(postId);
         if (postOptional.isPresent()) {
             Post existingPost = postOptional.get();
 
-            Post updatePost = postDto.toEntity();
 
-            postRepository.save(updatePost);
+            existingPost.update(postDto.getExplanation(), postDto.getAnswer1(), postDto.getAnswer2(), postDto.getAnswer3(), postDto.getPrice(), postDto.getDeadline());
+            postRepository.save(existingPost);
+            return PostDto.createdPostDto(existingPost);
+        } else {
+            throw new IllegalArgumentException("포스트를 찾을 수 없습니다."); // 해당 ID의 포스트가 없을 경우 예외 처리
         }
     }
 
