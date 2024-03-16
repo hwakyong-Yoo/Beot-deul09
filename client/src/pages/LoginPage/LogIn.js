@@ -33,8 +33,9 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      const userId = id.split("@")[0];
       const response = await axios.post("http://localhost:80/user/login", {
-        userId: id,
+        userId: userId,
         password: password,
       });
       console.log(response.data);
@@ -76,7 +77,7 @@ const Login = () => {
         <LoginInputWrapper>
           <LoginInputForm>
             <LoginInput
-              placeholder="아이디를 입력하세요."
+              placeholder="이메일을 입력하세요."
               value={id}
               ref={idRef}
               onChange={(e) => setId(e.target.value)}

@@ -30,6 +30,10 @@ const SignUp = () => {
   const checkpwRef = useRef();
   const [birth, setBirth] = useState(new Date());
   const [age, setAge] = useState(0);
+  const [emailBtnToggle, setEmailBtnToggle] = useState(false);
+  const [userEmailCode, setUserEmailCode] = useState("");
+  const [managerEmailCode, setManagerEmailCode] = useState("");
+  const [emailTrue, setEmailTrue] = useState(false);
 
   const [user, setUser] = useState({
     id: "",
@@ -71,6 +75,10 @@ const SignUp = () => {
       alert("입력 정보를 확인해주세요");
       return;
     }
+    if (!emailTrue) {
+      alert("이메일 인증번호가 일치하지 않습니다.");
+      return;
+    }
 
     // 회원가입 정보와 나이(age)를 서버에 전송
     const userData = {
@@ -90,6 +98,34 @@ const SignUp = () => {
       .catch((error) => {
         console.error("Error:", error);
       });
+  };
+
+  const handleCheck = (e) => {
+    e.preventDefault();
+    const email = { email: user.email };
+    axios
+      .post("http://localhost:80/sign-up/email-check", email)
+      .then((response) => {
+        console.log(response.data);
+        setManagerEmailCode(response.data);
+        setEmailBtnToggle(true);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  };
+
+  const handleCertification = (e) => {
+    e.preventDefault();
+    if (userEmailCode === managerEmailCode) {
+      alert("인증을 성공하였습니다!");
+      setEmailTrue(true);
+    } else {
+      alert("인증번호를 다시 입력해주세요.");
+      console.log("유저 입력: ", userEmailCode);
+      console.log("매니저: ", managerEmailCode);
+      setEmailTrue(false);
+    }
   };
 
   console.log("사용자 정보:", user);
@@ -119,8 +155,22 @@ const SignUp = () => {
                 }));
               }}
             />
-            <ConfirmBtn>이메일 인증 보내기</ConfirmBtn>
+            <ConfirmBtn onClick={handleCheck}>이메일 인증 보내기</ConfirmBtn>
           </ConfirmWrapper>
+
+          {emailBtnToggle && (
+            <ConfirmWrapper>
+              <InputIdPwHalf
+                placeholder="인증번호 입력"
+                type="text"
+                value={userEmailCode}
+                onChange={(e) => {
+                  setUserEmailCode(e.target.value);
+                }}
+              />
+              <ConfirmBtn onClick={handleCertification}>인증하기</ConfirmBtn>
+            </ConfirmWrapper>
+          )}
 
           <PwMatchWrapper>
             <IdPwTitle>비밀번호</IdPwTitle>
@@ -136,7 +186,6 @@ const SignUp = () => {
             ref={pwRef}
             onChange={handleChangeState}
           />
-
           <PwMatchWrapper>
             <IdPwTitle>비밀번호 확인</IdPwTitle>
             {user.password !== user.checkpw && (
@@ -151,7 +200,6 @@ const SignUp = () => {
             ref={checkpwRef}
             onChange={handleChangeState}
           />
-
           <IdPwTitle>이름</IdPwTitle>
           <InputIdPw
             placeholder="이름"
@@ -161,7 +209,6 @@ const SignUp = () => {
             ref={nameRef}
             onChange={handleChangeState}
           />
-
           <IdPwTitle>생년월일</IdPwTitle>
           <Calender>
             <FontAwesomeIcon

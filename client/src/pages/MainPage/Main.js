@@ -28,12 +28,22 @@ import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import Header from "../../components/Header";
 
 const Main = () => {
+  const userId = sessionStorage.getItem("userId");
+
   const navigate = useNavigate();
   const handleSearchClick = () => {
-    navigate("/search");
+    if (userId) {
+      navigate("/search");
+    } else {
+      navigate("/login");
+    }
   };
   const handleRecruitClick = () => {
-    navigate("/upload");
+    if (userId) {
+      navigate("/upload");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
