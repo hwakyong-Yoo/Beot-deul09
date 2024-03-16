@@ -39,7 +39,7 @@ public class TransactionService {
         Optional<Transaction> transactionOptional = transactionRepository.findById(transactionId);
         if (transactionOptional.isPresent()) {
             Transaction transaction = transactionOptional.get();
-            transaction.setStatus("입금 완료");
+            transaction.completeDeposit(); // 입금 완료 처리
             transactionRepository.save(transaction);
             log.info("입금이 확인되었습니다.");
         } else {
