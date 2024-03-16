@@ -59,6 +59,7 @@ public class PostDto {
                 .build();
     }
 
+    /*
     public Post toEntity() {
         return new Post(
                 postId,
@@ -79,5 +80,5 @@ public class PostDto {
                 account_num,
                 account_holder
         );
-    }
+    }*/
 }

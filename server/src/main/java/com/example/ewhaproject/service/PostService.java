@@ -1,13 +1,18 @@
 package com.example.ewhaproject.service;
 
+import com.example.ewhaproject.Handler.FileHandler;
 import com.example.ewhaproject.dto.PostDto;
+import com.example.ewhaproject.dto.PostResponseDto;
+import com.example.ewhaproject.entity.Photo;
 import com.example.ewhaproject.entity.Post;
 import com.example.ewhaproject.repository.KeywordRepository;
+import com.example.ewhaproject.repository.PhotoRepository;
 import com.example.ewhaproject.repository.PostRepository;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,6 +28,10 @@ public class PostService {
     private PostKeywordService postKeywordService;
     @Autowired
     private KeywordRepository keywordRepository;
+    @Autowired
+    private PhotoRepository photoRepository;
+    @Autowired
+    private FileHandler fileHandler;
 
     @Transactional
     public PostDto create(PostDto postDto) {
@@ -121,4 +130,45 @@ public class PostService {
     public Optional<Post> getPostByPostId(Long postId) {
         return postRepository.findById(postId);
     }
+
+    @Transactional
+    public void update(
+            Long id,
+            PostUpdateRequestDto requestDto,
+            List<MultipartFile> files
+    ) throws Exception {
+        Post post = postRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        List<Photo> photoList = fileHandler.parseFileInfo(post, files);
+
+        if(!photoList.isEmpty()){
+            for(Photo photo : photoList) {
+                photoRepository.save(photo);
+            }
+        }
+
+        post.update(requestDto.getTitle(),
+                requestDto.getContent());
+    }
+
+    /**
+     * 개별 조회
+     * */
+    @Transactional(readOnly = true)
+    public PostResponseDto searchById(Long id, List<Long> fileId){
+        Post entity = postRepository.findById(id).orElseThrow(()
+                -> new IllegalArgumentException("해당 게시글이 존재하지 않습니다."));
+
+        return new PostResponseDto(entity, fileId);
+    }
+
+    /**
+     * 전체 조회
+     * */
+    @Transactional(readOnly = true)
+    public List<Post> searchAllDesc() {
+        return postRepository.findAllDesc();
+    }
+
 }

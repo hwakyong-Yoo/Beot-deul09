@@ -2,12 +2,16 @@ package com.example.ewhaproject.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@AllArgsConstructor
+import java.util.ArrayList;
+import java.util.List;
+
 @NoArgsConstructor
 @ToString
 @Entity
 @Getter
+@Setter
 @Table(name="TB_POST")
 public class Post {
     @Id
@@ -46,6 +50,35 @@ public class Post {
     @Column
     private String account_holder;
 
+    @OneToMany(
+            mappedBy = "post",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
+    private List<Photo> photo = new ArrayList<>();
+
     public void updateDate(String currentFormattedDate) { this.date = currentFormattedDate; }
     public void close() { this.status = false;}
+
+    public void update(String product, String explanation) {
+        this.product = product;
+        this.explanation = explanation;
+    }
+
+    // Post에서 파일 처리 위함
+    public void addPhoto(Photo photo) {
+        this.photo.add(photo);
+
+        // 게시글에 파일이 저장되어있지 않은 경우
+        if(photo.getPost() != this)
+            // 파일 저장
+            photo.setPost(this);
+    }
+
+    @Builder
+    public Post(User user, String product, String explanation) {
+        this.userId = user.getUserId();
+        this.product = product;
+        this.explanation = explanation;
+    }
 }
