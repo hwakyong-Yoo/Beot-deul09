@@ -126,6 +126,7 @@ const Upload = () => {
         console.error("Error:", error);
       });
   };
+
   return (
     <Container>
       <UploadHeader />
