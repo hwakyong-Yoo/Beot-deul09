@@ -24,7 +24,11 @@ public class Post {
     @Column
     private String size_img;
     @Column
-    private String qna;
+    private String answer1;
+    @Column
+    private String answer2;
+    @Column
+    private String answer3;
     @Column
     private int min_participants;
     @Column

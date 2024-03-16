@@ -20,7 +20,9 @@ public class PostDto {
     private String img;
     private String explanation;     // 내용 (텍스트)
     private String size_img;
-    private String qna;
+    private String answer1;
+    private String answer2;
+    private String answer3;
     private int min_participants;
     private double price;
     private String date; //작성일
@@ -43,7 +45,9 @@ public class PostDto {
                 .img(createdPost.getImg())
                 .explanation(createdPost.getExplanation())
                 .size_img(createdPost.getSize_img())
-                .qna(createdPost.getQna())
+                .answer1(createdPost.getAnswer1())
+                .answer2(createdPost.getAnswer2())
+                .answer3(createdPost.getAnswer3())
                 .min_participants(createdPost.getMin_participants())
                 .price(createdPost.getPrice())
                 .date(createdPost.getDate())
@@ -63,7 +67,9 @@ public class PostDto {
                 img,
                 explanation,
                 size_img,
-                qna,
+                answer1,
+                answer2,
+                answer3,
                 min_participants,
                 price,
                 date,
