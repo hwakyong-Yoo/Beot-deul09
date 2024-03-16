@@ -21,24 +21,19 @@ public class TransactionController {
     UserService userService;
 
     @PostMapping("/purchase/{postId}") //상품 구매하기
-    public ResponseEntity<TransactionDto> purchase(@PathVariable long postId, @RequestBody TransactionDto transactionDto, HttpSession session) {
-        if (session != null) {
-            // 세션에서 userId 가져오기
-            String userId = (String) session.getAttribute("userId");
-            String name = userService.getNameById(userId);
-            log.info("현재 로그인한 사용자의 id: {}", userId);
-            log.info("현재 로그인한 사용자의 이름: {}", name);
+    public ResponseEntity<TransactionDto> purchase(@PathVariable long postId, @RequestBody TransactionDto transactionDto, @RequestHeader String userId) {
+        String name = userService.getNameById(userId);
+        log.info("현재 로그인한 사용자의 id: {}", userId);
+        log.info("현재 로그인한 사용자의 이름: {}", name);
 
-            try {
-                transactionDto.setPostId(postId);
-                transactionDto.setName(name);
-                TransactionDto createdDto = transactionService.purchase(transactionDto);
-                return ResponseEntity.status(HttpStatus.OK).body(createdDto);
-            } catch (Exception e) {
-                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-            }
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        try {
+            transactionDto.setPostId(postId);
+            transactionDto.setUserId(userId);
+            transactionDto.setName(name);
+            TransactionDto createdDto = transactionService.purchase(transactionDto);
+            return ResponseEntity.status(HttpStatus.OK).body(createdDto);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -54,16 +49,14 @@ public class TransactionController {
     }
 
     @GetMapping("/products/buyer") // 내가 구매한 상품보기
-    public ResponseEntity<List<Transaction>> myPurchases(HttpSession session) {
-        if (session != null) {
-            // 세션에서 userId 가져오기
-            String userId = (String) session.getAttribute("userId");
+    public ResponseEntity<List<Transaction>> myPurchases(@RequestHeader String userId) {
+        try {
             log.info("현재 로그인한 사용자의 id: {}", userId);
 
             // userId를 이용하여 작성된 post들을 가져오는 로직 추가
             List<Transaction> myPurchases = transactionService.findTransactionsByUserId(userId);
             return ResponseEntity.status(HttpStatus.OK).body(myPurchases);
-        } else {
+        } catch (Exception e){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }

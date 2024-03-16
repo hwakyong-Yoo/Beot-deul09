@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 public class TransactionDto {
     private Long transaction_id;
+    private String userId;
     private String name;
     private long postId;
     private String amount;
@@ -20,6 +21,7 @@ public class TransactionDto {
     public static TransactionDto createdTransactionDto(Transaction createdTransaction) {
         return TransactionDto.builder()
                 .transaction_id(createdTransaction.getTransaction_id())
+                .userId(createdTransaction.getUserId())
                 .name(createdTransaction.getName())
                 .postId(createdTransaction.getPostId())
                 .amount(createdTransaction.getAmount())
@@ -29,7 +31,8 @@ public class TransactionDto {
     }
 
     public Transaction toEntity() {
-        return new Transaction (transaction_id, name, postId, amount, size, status);
+        return new Transaction (transaction_id, name, userId, postId, amount, size, status);
     }
+
 }
 
