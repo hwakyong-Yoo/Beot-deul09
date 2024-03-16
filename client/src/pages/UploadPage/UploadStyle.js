@@ -2,12 +2,12 @@ import styled from "styled-components";
 
 export const ImgUploadWrapper = styled.div`
   display: flex;
-  margin: 16px 0 0 19px;
+  margin: 16px 19px;
+  overflow-x: scroll;
 `;
 
 export const ImgUpload = styled.div`
   display: flex;
-  background-color: #ffffff;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -25,27 +25,35 @@ export const ImgUpload = styled.div`
   }
 `;
 
-export const ImageUl = styled.ul`
-  overflow-x: scroll;
+export const ListWrapper = styled.div`
   display: flex;
-  padding: 0;
 `;
 
 export const ImgList = styled.div`
-  display: flex;
-  background-color: #ffffff;
-  justify-content: center;
-  align-items: center;
   width: 74px;
   height: 74px;
   border: 1px solid #a4a4a4;
   border-radius: 9px;
   margin-right: 9px;
-
   img {
-    width: 90%;
-    height: 90%;
+    width: 72px;
+    height: 70px;
+    border-radius: 9px;
   }
+`;
+
+export const ImgBtnWrapper = styled.div`
+  display: flex;
+  position: relative;
+`;
+
+export const RemoveBtn = styled.button`
+  background-color: transparent;
+  border: none;
+  position: absolute;
+  margin: 0;
+  right: -11px;
+  top: -2px;
 `;
 
 export const UploadTitleWrapper = styled.div`

@@ -7,11 +7,13 @@ import {
   UploadTitleWrapper,
   TitleInput,
   ImgList,
-  ImageUl,
+  ListWrapper,
+  RemoveBtn,
+  ImgBtnWrapper,
 } from "./UploadStyle";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCamera } from "@fortawesome/free-solid-svg-icons";
+import { faCamera, faTimesCircle } from "@fortawesome/free-solid-svg-icons";
 
 const Upload = () => {
   const productRef = useRef();
@@ -25,6 +27,12 @@ const Upload = () => {
   const [keywords, setKeywords] = useState([]);
 
   const [images, setImages] = useState([]);
+
+  const handleRemoveImage = (index) => {
+    const newImages = [...images];
+    newImages.splice(index, 1);
+    setImages(newImages);
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -49,33 +57,45 @@ const Upload = () => {
       <UploadHeader />
       <hr />
       <ImgUploadWrapper>
-        <ImgUpload>
-          <label htmlFor="image-upload">
-            <FontAwesomeIcon
-              icon={faCamera}
-              size="2xl"
-              style={{ color: "#898989", cursor: "pointer" }}
+        <ListWrapper>
+          <ImgUpload>
+            <label htmlFor="image-upload">
+              <FontAwesomeIcon
+                icon={faCamera}
+                size="2xl"
+                style={{ color: "#898989", cursor: "pointer" }}
+              />
+            </label>
+            <input
+              type="file"
+              id="image-upload"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleImageChange}
             />
-          </label>
-          <input
-            type="file"
-            id="image-upload"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={handleImageChange}
-          />
-          {images.length} / 5
-        </ImgUpload>
+            {images.length} / 5
+          </ImgUpload>
+        </ListWrapper>
 
-        {images.map((image, index) => (
-          <ImgList key={index}>
-            <img
-              src={image}
-              alt={`Uploaded ${index}`}
-              style={{ maxWidth: "100%" }}
-            />
-          </ImgList>
-        ))}
+        <ListWrapper>
+          {images.map((image, index) => (
+            <ImgList key={index}>
+              <ImgBtnWrapper>
+                <img
+                  src={image}
+                  alt={`Uploaded ${index}`}
+                  style={{ maxWidth: "100%" }}
+                />
+                <RemoveBtn onClick={() => handleRemoveImage(index)}>
+                  <FontAwesomeIcon
+                    icon={faTimesCircle}
+                    style={{ color: "#898989", cursor: "pointer" }}
+                  />
+                </RemoveBtn>
+              </ImgBtnWrapper>
+            </ImgList>
+          ))}
+        </ListWrapper>
       </ImgUploadWrapper>
 
       <UploadTitleWrapper>
