@@ -36,7 +36,7 @@ public class UserService {
 
             // 임시 비밀번호를 해시화하여 저장
             String hashedTempPassword = hashPassword(tempPassword);
-            user.setPassword(hashedTempPassword);
+            user.setTemporaryPassword(hashedTempPassword);
 
             // 사용자 엔티티 저장
             userRepository.save(user);

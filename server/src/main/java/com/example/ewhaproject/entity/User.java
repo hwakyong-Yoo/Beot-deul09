@@ -43,4 +43,8 @@ public class User {
         this.password = userDto.getPassword();
         this.name = userDto.getName();
     }
+
+    public void setTemporaryPassword(String hashedTempPassword) {
+        this.password = hashedTempPassword;
+    }
 }
