@@ -8,7 +8,8 @@ import UserInfo from "./pages/MyPage/Userinfo";
 import Recommend from "./pages/RecommendPage/Recommend";
 import Search from "./pages/SearchPage/Search";
 import Upload from "./pages/UploadPage/Upload";
-import FindIdPw from "./pages/LoginPage/FindIdPw";
+import FindPw from "./pages/LoginPage/FindPw";
+import ChangePw from "./pages/LoginPage/ChangePw";
 
 const Router = () => {
   return (
@@ -17,9 +18,10 @@ const Router = () => {
         <Route path="/" element={<Main />} />
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        <Route path="/findidpw" element={<FindIdPw />} />
+        <Route path="/findpw" element={<FindPw />} />
         <Route path="/my" element={<My />} />
-        <Route path="/my/userinfo" element={<UserInfo />} />
+        <Route path="/userinfo" element={<UserInfo />} />
+        <Route path="/changepw" element={<ChangePw />} />
         <Route path="/recommend" element={<Recommend />} />
         <Route path="/search" element={<Search />} />
         <Route path="/userinfo" element={<UserInfo />} />

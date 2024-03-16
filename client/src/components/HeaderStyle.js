@@ -4,9 +4,17 @@ import { NavLink as Link } from "react-router-dom";
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   width: 336px;
   margin: 24px auto 13px;
+`;
+
+export const HeaderCenter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 336px;
+  margin: 19px auto 13px;
 `;
 
 export const LogoWrapper = styled.div`
@@ -41,12 +49,6 @@ export const NavLink = styled(Link)`
   }
 `;
 
-export const NavBtn = styled.nav`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
-
 export const HButton = styled.button`
   height: 40px;
   border-radius: 4px;
@@ -64,4 +66,31 @@ export const HButton = styled.button`
     transition: all 0.2s ease-in-out;
     color: #9a9a9a;
   }
+`;
+
+export const LogoutWrapper = styled.div`
+  display: flex;
+`;
+
+export const LogoutBtn = styled.button`
+  background-color: #ffffff;
+  border: none;
+  font-family: "Pretendard-Regular";
+  font-size: 11px;
+  color: #707070;
+  cursor: pointer;
+`;
+
+export const UserBtn = styled.button`
+  background-color: #ffffff;
+  border: none;
+  font-family: "Pretendard-Regular";
+  font-size: 11px;
+  color: #707070;
+  text-decoration: underline solid #707070;
+  cursor: pointer;
+`;
+
+export const UserIconNav = styled.nav`
+  cursor: pointer;
 `;

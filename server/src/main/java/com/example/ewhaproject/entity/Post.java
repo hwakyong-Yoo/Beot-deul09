@@ -3,15 +3,11 @@ package com.example.ewhaproject.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
 @Getter
-@Setter
 @Table(name="TB_POST")
 public class Post {
     @Id
@@ -21,9 +17,6 @@ public class Post {
     private String userId;
     @Column
     private String product;
-    @ElementCollection
-    @Column(name = "keyword")
-    private List<String> keywords;
     @Column
     private String img;
     @Column
@@ -31,7 +24,11 @@ public class Post {
     @Column
     private String size_img;
     @Column
-    private String qna;
+    private String answer1;
+    @Column
+    private String answer2;
+    @Column
+    private String answer3;
     @Column
     private int min_participants;
     @Column
@@ -43,10 +40,12 @@ public class Post {
     @Column
     private String chatroom_link; //오픈채팅방 링크
     @Column
-    private boolean status = true; //게시물 작성시 기본 값으로 진행중
+    private Boolean status = true; //게시물 작성시 기본 값으로 진행중
     @Column
     private String account_num;
     @Column
     private String account_holder;
 
+    public void updateDate(String currentFormattedDate) { this.date = currentFormattedDate; }
+    public void close() { this.status = false;}
 }
