@@ -141,4 +141,15 @@ public class UserService {
             throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
         }
     }
+
+    public void delete(String userId) {
+        User target = userRepository.findById(userId).orElse(null);
+        if(target != null) {
+            userRepository.delete(target);
+            log.info("사용자 삭제 성공");
+        }
+        else {
+            log.error("사용자가 존재하지 않습니다.");
+        }
+    }
 }
