@@ -8,5 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EmailDto {
+
     private String email;
+
 }

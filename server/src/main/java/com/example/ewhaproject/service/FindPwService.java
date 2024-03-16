@@ -5,13 +5,18 @@ import com.example.ewhaproject.dto.FindPwResponseDto;
 import com.example.ewhaproject.entity.User;
 import com.example.ewhaproject.service.UserService;
 import com.example.ewhaproject.repository.UserRepository;
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Member;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -21,46 +26,87 @@ public class FindPwService {
     private final UserService userService;
     private final MailSender mailSender;
 
+    private final JavaMailSender emailSender;
+    private String authNum; // 인증 번호
+
     public String findPw(FindPwRequestDto request) throws Exception {
-        // request validation
-        User user = userRepository.findByuserId(request.getName().toString()).orElseThrow(() ->
+        User user = userRepository.findByname(request.getName()).orElseThrow(() ->
                 new BadCredentialsException("Invalid Account Information."));
 
         if(!user.getEmail().equals(request.getEmail())) {
             throw new BadCredentialsException("Email Does Not Match");
         }
 
-        // generate temporary password
-        char[] charSet = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F',
-                'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-
-        StringBuilder tempPw = new StringBuilder();
-
-        for (int i = 0; i < 10; i++) {
-            int idx = (int) (charSet.length * Math.random());
-            tempPw.append(charSet[idx]);
-        }
-
-        FindPwResponseDto newDto = FindPwResponseDto.builder()
-                .email(request.getEmail())
-                .mailTitle("메일 제목")
-                .mailContent("메일 내용")
-                .build();
-
-        // send e-mail
-        SimpleMailMessage message = new SimpleMailMessage();
-
-        message.setFrom("발송인 이메일 주소");
-        message.setTo(newDto.getEmail());
-        message.setReplyTo("회신받을 이메일 주소");
-        message.setSubject(newDto.getMailTitle());
-        message.setText(newDto.getMailContent());
-
-        mailSender.send(message);
-
-        userService.SetTempPassword(request.getName(), tempPw.toString());
+        userService.SetTempPassword(request.getName(), sendEmail(request.getEmail()).toString());
         userRepository.save(user);
 
         return "Temporary password issued.";
+    }
+
+    public void createCode() {
+        Random random = new Random();
+        StringBuffer key = new StringBuffer();
+
+        for(int i=0; i<8; i++) {
+            int idx = random.nextInt(3);
+
+            switch (idx) {
+                case 0 :
+                    key.append((char) ((int)random.nextInt(26) + 97));
+                    break;
+                case 1:
+                    key.append((char) ((int)random.nextInt(26) + 65));
+                    break;
+                case 2:
+                    key.append(random.nextInt(9));
+                    break;
+            }
+        }
+        authNum = key.toString();
+    }
+
+    // 메일 양식 작성
+    public MimeMessage createEmailForm(String email) throws MessagingException, UnsupportedEncodingException {
+        createCode();
+        // 메일발송
+        String setFrom = "sendmail0909@naver.com";
+        // 메일 수신
+        String toEmail = email;
+        // 메일 제목
+        String title = "[벗들공구] 임시비밀번호 발송 안내";
+
+        MimeMessage message = emailSender.createMimeMessage();
+        message.addRecipients(MimeMessage.RecipientType.TO, toEmail);
+        message.setSubject(title);
+
+        // 메일 내용
+        String msgOfEmail="";
+        msgOfEmail += "<div style='margin:100px;'>";
+        msgOfEmail += "<h1> 벗들공구 비밀번호 찾기를 위한 임시비밀번호 안내 </h1>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<p>벗들공구 서비스를 이용해주셔서 감사합니다.<p>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<p>로그인 시 기존 비밀번호 대신 아래 임시비밀번호를 입력해주세요.<p>";
+        msgOfEmail += "<p>아이디는 기존과 동일하게 입력해주세요.<p>";
+        msgOfEmail += "<br>";
+        msgOfEmail += "<div align='center' style='border:1px solid black; font-family:verdana';>";
+        msgOfEmail += "<h3 style='color:green;'>임시비밀번호</h3>";
+        msgOfEmail += "<div style='font-size:130%'>";
+        msgOfEmail += "CODE : <strong>";
+        msgOfEmail += authNum + "</strong><div><br/> ";
+        msgOfEmail += "</div>";
+
+        message.setFrom(setFrom);
+        message.setText(msgOfEmail, "utf-8", "html");
+
+        return message;
+    }
+
+    public String sendEmail(String email) throws MessagingException, UnsupportedEncodingException {
+
+        MimeMessage mimeMessage = createEmailForm(email);
+        emailSender.send(mimeMessage);
+
+        return authNum;
     }
 }
