@@ -1,5 +1,5 @@
 import { Container } from "../../Layout";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -28,6 +28,7 @@ import {
 import { Calender } from "../LoginPage/FindPwStyle";
 import { LoginBtn } from "../LoginPage/LoginStyle";
 import axios from "axios";
+import keywordList from "./keywordList";
 
 const Upload = () => {
   const [product, setProduct] = useState("");
@@ -37,41 +38,12 @@ const Upload = () => {
   const [answer3, setAnswer3] = useState("");
   const [min_participants, setMin_participants] = useState();
   const [price, setPrice] = useState();
-  const [deadline, setDeadline] = useState(new Date());
+  const [deadline, setDeadline] = useState(
+    new Date().toISOString().split("T")[0]
+  );
   const [chatroom_link, setChatroom_link] = useState("");
   const [keywords, setKeywords] = useState([]);
   const [images, setImages] = useState([]);
-
-  const keywordsList = [
-    {
-      outer: [
-        "후리스",
-        "뽀글이 학잠",
-        "학잠",
-        "과잠",
-        "주경바막",
-        "숏돕바",
-        "롱돕바",
-        "롱패딩",
-        "후드티",
-      ],
-    },
-    {
-      color: ["초록색", "검정색", "화이트", "그레이"],
-    },
-    {
-      option: [
-        "은색로고",
-        "흰색로고",
-        "금색로고",
-        "자수로고",
-        "꽃자수",
-        "1온스",
-        "2온스",
-        "4온스",
-      ],
-    },
-  ];
 
   const handleRemoveImage = (index) => {
     const newImages = [...images];
@@ -142,10 +114,12 @@ const Upload = () => {
     axios
       .post("http://localhost:80/posts", uploadData)
       .then((response) => {
+        console.log(uploadData);
         console.log(response.data);
       })
       .catch((error) => {
         console.error("Error:", error);
+        console.log(uploadData);
       });
   };
   return (
@@ -207,7 +181,7 @@ const Upload = () => {
       <UploadTitleWrapper>
         <h3>키워드 선택</h3>
         <CategoryWrapper>
-          {keywordsList.map((category, index) => (
+          {keywordList.map((category, index) => (
             <KeyWrapper key={index}>
               <Category>{Object.keys(category)[0]}</Category>
               <KeywordWrapper>
@@ -299,7 +273,7 @@ const Upload = () => {
         <TitleInput
           placeholder="0명"
           value={min_participants}
-          onChange={(e) => setMin_participants(e.target.value)}
+          onChange={(e) => setMin_participants(parseInt(e.target.value))}
           type="text"
         />
       </UploadTitleWrapper>
@@ -309,7 +283,7 @@ const Upload = () => {
         <TitleInput
           placeholder="1개당 가격"
           value={price}
-          onChange={(e) => setPrice(e.target.value)}
+          onChange={(e) => setPrice(parseInt(e.target.value))}
           type="text"
         />
       </UploadTitleWrapper>
