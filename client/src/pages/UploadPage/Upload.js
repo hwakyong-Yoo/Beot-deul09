@@ -3,6 +3,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 import {
   faCamera,
   faTimesCircle,
@@ -31,6 +32,7 @@ import axios from "axios";
 import keywordList from "./keywordList";
 
 const Upload = () => {
+  const navigate = useNavigate();
   const [product, setProduct] = useState("");
   const [explanation, setExplanation] = useState("");
   const [answer1, setAnswer1] = useState("");
@@ -46,6 +48,8 @@ const Upload = () => {
   const [account_holder, setAccount_Holder] = useState("");
   const [account_num, setAccount_Num] = useState("");
   const [images, setImages] = useState([]);
+
+  const userId = sessionStorage.getItem("userId"); // userId 가져오기
 
   const handleRemoveImage = (index) => {
     const newImages = [...images];
@@ -118,12 +122,13 @@ const Upload = () => {
     axios
       .post("http://localhost:80/posts", uploadData, {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("userId")}`,
+          userId: userId,
         },
       })
       .then((response) => {
         // 요청이 성공적으로 처리됐을 때의 동작
         console.log(response.data);
+        navigate("/");
       })
       .catch((error) => {
         // 요청이 실패했을 때의 동작

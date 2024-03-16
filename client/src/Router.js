@@ -28,8 +28,8 @@ const Router = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/userinfo" element={<UserInfo />} />
         <Route path="/upload" element={<Upload />} />
-        <Route path="/detailcustomer" element={<DetailCustomer />} />
-        <Route path="/detailseller" element={<DetailSeller />} />
+        <Route path="/detailcustomer/:postId" element={<DetailCustomer />} />
+        <Route path="/detailseller/:postId" element={<DetailSeller />} />
       </Routes>
     </BrowserRouter>
   );
