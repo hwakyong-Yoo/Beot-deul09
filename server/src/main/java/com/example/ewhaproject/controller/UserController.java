@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -84,6 +83,8 @@ public class UserController {
         try {
             if (userService.login(userDto)) {
                 session.setAttribute("userId", user.getUserId()); // 세션에 사용자 ID 저장
+                String userId = (String) session.getAttribute("userId");
+                log.info("현재 로그인한 사용자의 id: {}", userId);
                 response.put("msg", "로그인이 완료되었습니다.");
                 response.put("statusCode", 200);
                 response.put("userId", user.getUserId());

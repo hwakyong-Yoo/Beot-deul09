@@ -1,5 +1,6 @@
 package com.example.ewhaproject.entity;
 
+import com.example.ewhaproject.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -47,5 +48,14 @@ public class Post {
     private String account_holder;
 
     public void updateDate(String currentFormattedDate) { this.date = currentFormattedDate; }
+
+    public void update(String explanation, String answer1, String answer2, String answer3, double price, String deadline) {
+        this.explanation = explanation;
+        this.answer1= answer1;
+        this.answer2=answer2;
+        this.answer3= answer3;
+        this.price=price;
+        this.deadline=deadline;
+    }
     public void close() { this.status = false;}
 }

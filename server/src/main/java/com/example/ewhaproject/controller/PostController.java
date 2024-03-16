@@ -1,5 +1,6 @@
 package com.example.ewhaproject.controller;
 
+import com.example.ewhaproject.dto.KeywordDto;
 import com.example.ewhaproject.dto.PostDto;
 import com.example.ewhaproject.entity.Post;
 import com.example.ewhaproject.service.KeywordService;
@@ -27,11 +28,11 @@ public class PostController {
 
     @PostMapping("/posts") // 게시물 작성
     public ResponseEntity<PostDto> create(@RequestBody PostDto postDto, HttpSession session) {
+        // 세션에서 userId 가져오기
+        String userId = (String) session.getAttribute("userId");
+        String name = userService.getNameById(userId);
+        log.info("현재 로그인한 사용자의 id: {}", userId);
         try {
-            // 세션에서 userId 가져오기
-            String userId = (String) session.getAttribute("userId");
-            String name = userService.getNameById(userId);
-            log.info("현재 로그인한 사용자의 id: {}", userId);
             postDto.setUserId(userId);
             postDto.setDate(PostDto.getCurrentFormattedDate());
 
@@ -47,8 +48,8 @@ public class PostController {
     @PutMapping("/post/edit/{postId}") // 게시물 수정
     public ResponseEntity<PostDto> updatePost(@PathVariable long postId, @RequestBody PostDto postDto) {
         try {
-            postService.updatePostContent(postDto, postId);
-            return ResponseEntity.status(HttpStatus.OK).body(postDto);
+            PostDto updatePostContent = postService.updatePostContent(postDto, postId);
+            return ResponseEntity.status(HttpStatus.OK).body(updatePostContent);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -118,13 +119,11 @@ public class PostController {
 
     }
 
-    @GetMapping("/searchByKeyword")
-    public ResponseEntity<List<PostDto>> getPostsByKeyword(@RequestParam("keyword") String keyword) {
-        if (keyword.isEmpty()) {
-            return ResponseEntity.badRequest().build(); // 키워드가 비어있는 경우 유효하지 않은 요청으로 처리
-        }
+    @PostMapping("/searchByKeyword")
+    public ResponseEntity<List<PostDto>> getPostsByKeyword(@RequestBody KeywordDto keywordDto) {
+        String keyword = keywordDto.getKeyword();
 
-        // 여러 키워드에 해당하는 포스트들을 가져옴
+        // 키워드에 해당하는 포스트들을 가져옴
         List<PostDto> postDtos = postService.findPostsByKeyword(keyword);
 
         // 검색된 포스트들이 없는 경우
