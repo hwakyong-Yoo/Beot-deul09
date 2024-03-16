@@ -34,21 +34,21 @@ const DetailSeller = () => {
     }
   };
 
-  // const fetchCustomerList = async () => {
-  //   try {
-  //     const response = await axios.get(
-  //       `http://localhost:80/transactions/${postId}`
-  //     );
-  //     setUserList(response.data);
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error fetching post detail:", error);
-  //   }
-  // };
+  const fetchCustomerList = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:80/transactions/${postId}`
+      );
+      setUserList(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching post detail:", error);
+    }
+  };
 
   useEffect(() => {
     fetchPostDetail();
-    //fetchCustomerList();
+    fetchCustomerList();
   }, [postId]);
 
   return (

@@ -3,11 +3,14 @@ import Header from "../../components/Header";
 import styled from "styled-components";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 const Participate = () => {
   const navigate = useNavigate();
   const [size, setSize] = useState("");
   const [amount, setAmount] = useState(1);
+  const { postId } = useParams();
 
   const handleSizeChange = (e) => {
     setSize(e.target.value);
@@ -18,8 +21,21 @@ const Participate = () => {
   };
 
   const handleParticipateClick = () => {
-    alert("참여가 완료되었습니다!");
-    navigate("/");
+    const postData = {
+      amount: amount,
+      size: size,
+    };
+    axios
+      .post(`http://localhost:80/purchase/${postId}`, postData)
+      .then((response) => {
+        console.log("참여가 완료되었습니다:", response.data);
+        alert("참여가 완료되었습니다!");
+
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("참여에 실패했습니다:", error);
+      });
   };
 
   return (
