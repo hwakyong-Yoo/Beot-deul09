@@ -103,19 +103,36 @@ public class PostController {
     }
 
     @GetMapping("/products/seller") // 자신의 판매상품 확인
-    public ResponseEntity<List<Post>> getPostByUserId(HttpSession session) {
+    public ResponseEntity<List<PostDto>> getPostByUserId(HttpSession session) {
         if (session != null) {
             // 세션에서 userId 가져오기
             String userId = (String) session.getAttribute("userId");
             log.info("현재 로그인한 사용자의 id: {}", userId);
 
             // userId를 이용하여 작성된 post들을 가져오는 로직 추가
-            List<Post> myProducts = postService.findPostsByUserId(userId);
+            List<PostDto> myProducts = postService.findPostsByUserId(userId);
             return ResponseEntity.status(HttpStatus.OK).body(myProducts);
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
+    }
+
+    @GetMapping("/searchByKeyword")
+    public ResponseEntity<List<PostDto>> getPostsByKeyword(@RequestParam("keyword") String keyword) {
+        if (keyword.isEmpty()) {
+            return ResponseEntity.badRequest().build(); // 키워드가 비어있는 경우 유효하지 않은 요청으로 처리
+        }
+
+        // 여러 키워드에 해당하는 포스트들을 가져옴
+        List<PostDto> postDtos = postService.findPostsByKeyword(keyword);
+
+        // 검색된 포스트들이 없는 경우
+        if (postDtos.isEmpty()) {
+            return ResponseEntity.noContent().build(); // 컨텐츠가 없음을 의미하는 상태코드 204를 반환
+        }
+
+        return ResponseEntity.ok(postDtos); // 포스트들을 담은 응답 반환
     }
 
 }
