@@ -1,6 +1,13 @@
 import styled from "styled-components";
 import { NavLink as Link } from "react-router-dom";
 
+export const Wrap = styled.div`
+  display: flex;
+  width: 336px;
+  margin: 24px auto 13px;
+  align-items: center;
+`;
+
 export const HeaderWrapper = styled.div`
   display: flex;
   justify-content: space-between;
@@ -41,6 +48,21 @@ export const NavLink = styled(Link)`
   text-decoration: none;
   height: 100%;
   cursor: pointer;
+
+  img {
+    height: 27px;
+    height: 27px;
+    margin-right: 6px;
+  }
+`;
+
+export const NavX = styled(Link)`
+  align-items: center;
+  text-decoration: none;
+  height: 100%;
+  cursor: pointer;
+  color: black;
+  margin-right: 115px;
 
   img {
     height: 27px;
