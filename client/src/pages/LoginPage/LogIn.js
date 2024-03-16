@@ -65,7 +65,7 @@ const Login = () => {
   };
 
   const handleFindIdPw = () => {
-    navigate("/findidpw");
+    navigate("/findpw");
   };
 
   return (
