@@ -4,11 +4,11 @@ import lombok.*;
 
 @Data
 @Getter
-@Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class EmailDto {
+@AllArgsConstructor
+public class FindPwRequestDto {
 
+    private String name;
     private String email;
 
 }

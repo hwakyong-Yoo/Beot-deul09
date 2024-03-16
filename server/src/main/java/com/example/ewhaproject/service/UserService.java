@@ -29,8 +29,8 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public void SetTempPassword(String userId, String tempPassword) {
-        Optional<User> userOptional = userRepository.findById(userId);
+    public void SetTempPassword(String name, String tempPassword) {
+        Optional<User> userOptional = userRepository.findByname(name);
         if (userOptional.isPresent()) {
             User user = userOptional.get();
 
@@ -42,7 +42,7 @@ public class UserService {
             userRepository.save(user);
             log.info("임시 비밀번호 설정 성공");
         } else {
-            throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
+            throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + name);
         }
     }
 
@@ -139,6 +139,17 @@ public class UserService {
         } else {
             // 사용자를 찾을 수 없는 경우에 대한 처리를 추가하세요.
             throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
+        }
+    }
+
+    public void delete(String userId) {
+        User target = userRepository.findById(userId).orElse(null);
+        if(target != null) {
+            userRepository.delete(target);
+            log.info("사용자 삭제 성공");
+        }
+        else {
+            log.error("사용자가 존재하지 않습니다.");
         }
     }
 }
