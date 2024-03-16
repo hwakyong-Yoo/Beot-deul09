@@ -1,6 +1,7 @@
 import { Container } from "../../Layout";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Header from "../../components/Header";
 import {
@@ -24,12 +25,30 @@ const FindPw = () => {
   const findPwEmailRef = useRef();
   const [findPwEmail, setFindPwEmail] = useState("");
 
-  const handleSubmit = () => {
-    navigate("/");
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const userData = {
+      name: findPwName,
+      email: findPwEmail,
+    };
+
+    axios
+      .put("http://localhost:80/user/find/password", userData)
+      .then((response) => {
+        console.log(response.data);
+        alert("이메일 주소로 임시 비밀번호가 전송되었습니다.");
+        navigate("/login");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        alert("이름 또는 이메일 주소를 다시 확인해주세요.");
+      });
   };
+
   const handleCancel = () => {
     navigate(-1);
   };
+
   return (
     <Container>
       <Header headText={"벗들공구"} goHeadTitle={"/"} />
