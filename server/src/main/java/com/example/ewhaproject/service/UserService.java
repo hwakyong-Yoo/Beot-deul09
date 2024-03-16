@@ -8,8 +8,19 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.security.NoSuchAlgorithmException;
+import java.util.Random;
+
 
 @Slf4j
 @Service
@@ -17,6 +28,50 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    public void SetTempPassword(String userId, String tempPassword) {
+        Optional<User> userOptional = userRepository.findById(userId);
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+
+            // 임시 비밀번호를 해시화하여 저장
+            String hashedTempPassword = hashPassword(tempPassword);
+            user.setPassword(hashedTempPassword);
+
+            // 사용자 엔티티 저장
+            userRepository.save(user);
+            log.info("임시 비밀번호 설정 성공");
+        } else {
+            throw new IllegalArgumentException("해당 사용자를 찾을 수 없습니다: " + userId);
+        }
+    }
+
+    // 비밀번호 해시화 메서드
+    private String hashPassword(String password) {
+        try {
+            // SHA-256 해시 함수를 사용하여 MessageDigest 객체 생성
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+
+            // 비밀번호를 바이트 배열로 변환하여 해시화
+            byte[] hashBytes = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+
+            // 바이트 배열을 16진수 문자열로 변환
+            StringBuilder hexString = new StringBuilder();
+            for (byte hashByte : hashBytes) {
+                String hex = Integer.toHexString(0xff & hashByte);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+
+            // 해시된 비밀번호 반환
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            // 해당 알고리즘이 지원되지 않을 경우 예외 처리
+            throw new RuntimeException("해시 알고리즘이 지원되지 않습니다.", e);
+        }
+    }
 
     public void registerUser(UserDto userDto) throws NoSuchAlgorithmException {
         User user = userDto.toEntity();
@@ -28,7 +83,6 @@ public class UserService {
         userRepository.save(user);
         log.info("DB에 회원 저장 성공");
     }
-
 
     public boolean login(UserDto userDto) throws NoSuchAlgorithmException{
         User user = userDto.toEntity();
