@@ -33,24 +33,20 @@ const ChangePw = () => {
       changePwRef.current.focus();
       return;
     }
+    const userData = {
+      userId: sessionStorage.getItem("userId"),
+      password: changePw,
+    };
 
-    try {
-      const response = await axios.put("http://localhost:80/user/edit", {
-        password: changePw,
+    axios
+      .put("http://localhost:80/user/edit", userData)
+      .then((response) => {
+        console.log(response.data);
+        navigate("/");
+      })
+      .catch((error) => {
+        console.error("Error:", error);
       });
-
-      if (response.status === 200) {
-        alert("비밀번호가 변경되었습니다.");
-        navigate("/userinfo");
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 401) {
-        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
-        navigate("/login");
-      } else {
-        alert("비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
-      }
-    }
   };
 
   const handleCancel = () => {
