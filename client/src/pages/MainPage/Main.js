@@ -22,7 +22,6 @@ import {
   RemainDay,
   RecommendItemImg,
   RecommendItemTitle,
-  ItemLink,
 } from "./MainStyle";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

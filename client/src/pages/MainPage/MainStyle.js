@@ -87,7 +87,7 @@ export const RecruitBtn = styled.button`
 
 export const ItemSection = styled.div`
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   flex-wrap: wrap;
   width: 336px;
   margin: 18px auto;
@@ -118,7 +118,7 @@ export const HashtagWrapper = styled.div`
   display: flex;
   margin: 4px 0 0 10px;
   flex-wrap: wrap;
-  max-height: 0.6em;
+  max-height: 0.9em;
   overflow: hidden;
 `;
 
@@ -126,7 +126,7 @@ export const Hashtag = styled.div`
   width: 31px;
   height: 11px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   margin: 0 4px 4px 0;
   background-color: #85cc1680;

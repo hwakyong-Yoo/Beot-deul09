@@ -1,6 +1,6 @@
 import { Container } from "../../Layout";
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import Header from "../../components/Header";
 import {
@@ -20,6 +20,7 @@ import {
 const DetailCustomer = () => {
   const [postDetail, setPostDetail] = useState(null);
   const { postId } = useParams();
+  const navigate = useNavigate();
 
   const fetchPostDetail = async () => {
     try {
@@ -51,7 +52,9 @@ const DetailCustomer = () => {
         </NameWrapper>
         <TitleBtnWrapper>
           <h1>{postDetail.product}</h1>
-          <SellerEditBtn>참여</SellerEditBtn>
+          <SellerEditBtn onClick={() => navigate("/participate")}>
+            참여
+          </SellerEditBtn>
         </TitleBtnWrapper>
         <h5>{postDetail.deadline}까지 모집중</h5>
         <CategoryWrapper>
