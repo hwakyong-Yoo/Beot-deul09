@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.security.authentication.BadCredentialsException;
+import com.example.ewhaproject.exception.InvalidAccountInfoException;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
@@ -31,10 +31,10 @@ public class FindPwService {
 
     public String findPw(FindPwRequestDto request) throws Exception {
         User user = userRepository.findByname(request.getName()).orElseThrow(() ->
-                new BadCredentialsException("Invalid Account Information."));
+                new InvalidAccountInfoException("Invalid Account Information."));
 
         if(!user.getEmail().equals(request.getEmail())) {
-            throw new BadCredentialsException("Email Does Not Match");
+            throw new InvalidAccountInfoException("Email Does Not Match");
         }
 
         userService.SetTempPassword(request.getName(), sendEmail(request.getEmail()).toString());
