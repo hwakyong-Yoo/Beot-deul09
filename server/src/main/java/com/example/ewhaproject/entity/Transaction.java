@@ -27,6 +27,9 @@ public class Transaction {
     private String amount;
 
     @Column
+    private String product_option;
+
+    @Column
     private String size;
 
     @Column
