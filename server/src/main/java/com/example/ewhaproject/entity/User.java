@@ -41,7 +41,6 @@ public class User {
 
     public void updateFromDto(UserDto userDto) { //회원 정보 수정
         this.password = userDto.getPassword();
-        this.name = userDto.getName();
     }
 
     public void setTemporaryPassword(String hashedTempPassword) {
