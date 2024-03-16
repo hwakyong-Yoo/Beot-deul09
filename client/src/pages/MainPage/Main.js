@@ -32,11 +32,7 @@ const Main = () => {
 
   const navigate = useNavigate();
   const handleSearchClick = () => {
-    if (userId) {
-      navigate("/search");
-    } else {
-      navigate("/login");
-    }
+    navigate("/search");
   };
   const handleRecruitClick = () => {
     if (userId) {
