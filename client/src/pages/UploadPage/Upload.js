@@ -112,16 +112,21 @@ const Upload = () => {
     };
 
     axios
-      .post("http://localhost:80/posts", uploadData)
+      .post("http://localhost:80/posts", uploadData, {
+        headers: {
+          Authorization: `Bearer ${sessionStorage.getItem("userId")}`,
+        },
+      })
       .then((response) => {
-        console.log(uploadData);
+        // 요청이 성공적으로 처리됐을 때의 동작
         console.log(response.data);
       })
       .catch((error) => {
+        // 요청이 실패했을 때의 동작
         console.error("Error:", error);
-        console.log(uploadData);
       });
   };
+
   return (
     <Container>
       <UploadHeader />
@@ -274,7 +279,7 @@ const Upload = () => {
           placeholder="0명"
           value={min_participants}
           onChange={(e) => setMin_participants(parseInt(e.target.value))}
-          type="text"
+          type="number"
         />
       </UploadTitleWrapper>
 
@@ -284,7 +289,7 @@ const Upload = () => {
           placeholder="1개당 가격"
           value={price}
           onChange={(e) => setPrice(parseInt(e.target.value))}
-          type="text"
+          type="number"
         />
       </UploadTitleWrapper>
 

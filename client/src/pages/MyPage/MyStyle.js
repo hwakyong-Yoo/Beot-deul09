@@ -12,7 +12,7 @@ export const UserInfoWrapper = styled.div`
   padding: 14px;
 `;
 
-export const UserInfo = styled.div`
+export const UserInformation = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;

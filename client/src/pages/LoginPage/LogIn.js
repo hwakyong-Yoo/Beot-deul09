@@ -45,6 +45,7 @@ const Login = () => {
         sessionStorage.setItem("userId", response.data.userId);
         navigate("/");
         console.log("로그인성공:");
+        console.log(sessionStorage);
       } else {
         setLoginCheck(false);
       }

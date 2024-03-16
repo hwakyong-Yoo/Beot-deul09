@@ -2,7 +2,7 @@ import { Container } from "../../Layout";
 import Header from "../../components/Header";
 import {
   UserInfoWrapper,
-  UserInfo,
+  UserInformation,
   NextBtn,
   PurchaseListWrapper,
   PurchaseType,
@@ -21,7 +21,7 @@ import { useNavigate } from "react-router";
 const My = () => {
   const navigate = useNavigate();
   const handleNextBtn = () => {
-    navigate("/my/userinfo");
+    navigate("/userinfo");
   };
   const inProgress = true; //데이터 가져올거(예시)
   return (
@@ -29,10 +29,10 @@ const My = () => {
       <Header headText={"마이페이지"} goHeadTitle={"/my"} />
       <hr />
       <UserInfoWrapper>
-        <UserInfo>
+        <UserInformation>
           <h3>{sessionStorage.getItem("name")}님, 안녕하세요!</h3>
           <h5>{sessionStorage.getItem("userId")}</h5>
-        </UserInfo>
+        </UserInformation>
         <NextBtn onClick={handleNextBtn}>
           <FontAwesomeIcon icon={faAngleRight} />
         </NextBtn>

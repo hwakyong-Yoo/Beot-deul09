@@ -1,6 +1,8 @@
 import { React } from "react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 import { Container } from "../../Layout";
+import { useState } from "react";
 import {
   MainSearchForm,
   SearchInput,
@@ -26,9 +28,11 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 
 import Header from "../../components/Header";
+import axios from "axios";
 
 const Main = () => {
   const userId = sessionStorage.getItem("userId");
+  const [allItems, setAllItems] = useState([]);
 
   const navigate = useNavigate();
   const handleSearchClick = () => {
@@ -41,6 +45,18 @@ const Main = () => {
       navigate("/login");
     }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:80/posts");
+        setAllItems(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
 
   return (
     <Container>
@@ -78,27 +94,25 @@ const Main = () => {
       <RecruitBtn onClick={handleRecruitClick}>+ 공동구매 모집하기</RecruitBtn>
 
       <ItemSection>
-        <ItemWrapper>
-          <ItemImg>
-            <img
-              className="item"
-              src={process.env.PUBLIC_URL + "/assets/item.png"}
-              alt="Item"
-            />
-          </ItemImg>
-          <ItemTitle>이화 배꽃 학잠</ItemTitle>
-          <HashtagWrapper>
-            <Hashtag>초록색</Hashtag>
-            <Hashtag>2온스</Hashtag>
-            <Hashtag>금박로고</Hashtag>
-          </HashtagWrapper>
-
-          <DayWrapper>
-            <DDay>D-8</DDay>
-            <RemainDay>참여마감 : 24.03.20</RemainDay>
-          </DayWrapper>
-        </ItemWrapper>
-        <ItemWrapper></ItemWrapper>
+        {allItems.map((item, index) => (
+          <ItemWrapper key={index}>
+            <ItemImg>
+              <img
+                className="item"
+                src={process.env.PUBLIC_URL + "/assets/item.png"}
+                alt="Item"
+              />
+            </ItemImg>
+            <ItemTitle>{item.product}</ItemTitle>
+            <HashtagWrapper>
+              {/* 여기에 해시태그 표시 로직 추가 */}
+            </HashtagWrapper>
+            <DayWrapper>
+              <DDay>{/* 여기에 D-Day 설정 */}</DDay>
+              <RemainDay>{item.deadline}</RemainDay>
+            </DayWrapper>
+          </ItemWrapper>
+        ))}
       </ItemSection>
     </Container>
   );
