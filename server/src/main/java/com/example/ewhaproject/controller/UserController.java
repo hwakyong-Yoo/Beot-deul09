@@ -39,11 +39,11 @@ public class UserController {
         }
     }
 
-    @PutMapping("/user/edit")//회원 정보 수정
+    @PutMapping("/user/edit") //회원 정보 수정
     public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto, HttpSession session) throws NoSuchAlgorithmException {
         if (session != null) {
             // 세션에서 userId 가져오기
-            String userId = (String) session.getAttribute("userId");
+            String userId = userDto.getUserId(); // UserDto 객체에서 userId 가져오기
             log.info("현재 로그인한 사용자의 id: {}", userId);
 
             userService.updateUserInformation(userDto, userId);
@@ -53,6 +53,7 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
     }
+
     @GetMapping("/userId/exists") //아이디 중복 체크
     public ResponseEntity<Map<String, Object>> userIdDuplicate(@RequestBody String userId) {
         Map<String, Object> response = new HashMap<>();
