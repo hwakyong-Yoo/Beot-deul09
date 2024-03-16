@@ -25,7 +25,7 @@ const ChangePw = () => {
   const checkChangePwRef = useRef();
   const [checkChangePw, setCheckChangePw] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleChange = async (e) => {
     e.preventDefault();
 
     if (changePw.length < 8) {
@@ -35,7 +35,7 @@ const ChangePw = () => {
     }
 
     try {
-      const response = await axios.put("/user/edit", {
+      const response = await axios.put("http://localhost:80/user/edit", {
         password: changePw,
       });
 
@@ -56,6 +56,7 @@ const ChangePw = () => {
   const handleCancel = () => {
     navigate(-1);
   };
+  console.log(sessionStorage);
 
   return (
     <Container>
@@ -81,7 +82,6 @@ const ChangePw = () => {
             ref={changePwRef}
             onChange={(e) => setChangePw(e.target.value)}
           />
-
           <PwMatchWrapper>
             <IdPwTitle>비밀번호 확인</IdPwTitle>
             {changePw !== checkChangePw && (
@@ -96,7 +96,7 @@ const ChangePw = () => {
             onChange={(e) => setCheckChangePw(e.target.value)}
           />
         </InputPwDiv>
-        <FindPwBtn onClick={handleSubmit}>비밀번호 재설정</FindPwBtn>
+        <FindPwBtn onClick={handleChange}>비밀번호 재설정</FindPwBtn>
         <CancelBtn onClick={handleCancel}>취소</CancelBtn>
       </FindWrapper>
     </Container>

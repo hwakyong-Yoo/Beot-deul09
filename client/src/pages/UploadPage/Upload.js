@@ -6,6 +6,8 @@ import {
   ImgUpload,
   UploadTitleWrapper,
   TitleInput,
+  ImgList,
+  ImageUl,
 } from "./UploadStyle";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,33 +18,66 @@ const Upload = () => {
   const [product, setProduct] = useState("");
   const [explanation, setExplanation] = useState("");
   const [qna, setQna] = useState("");
-  const [min_participants, setMin_participants] = useState(0);
-  const [price, setPrice] = useState(0);
+  const [min_participants, setMin_participants] = useState();
+  const [price, setPrice] = useState();
   const [deadline, setDeadline] = useState("");
   const [chatroom_link, setChatroom_link] = useState("");
   const [keywords, setKeywords] = useState([]);
 
+  const [images, setImages] = useState([]);
+
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    const reader = new FileReader();
+
+    if (images.length >= 5) {
+      alert("이미지는 최대 5개까지만 업로드할 수 있습니다.");
+      return;
+    }
+
+    reader.onloadend = () => {
+      setImages((prevImages) => [...prevImages, reader.result]);
+    };
+
+    if (file) {
+      reader.readAsDataURL(file);
+    }
+    console.log(images);
+  };
   return (
     <Container>
       <UploadHeader />
       <hr />
       <ImgUploadWrapper>
         <ImgUpload>
-          <FontAwesomeIcon
-            icon={faCamera}
-            size="2xl"
-            style={{ color: "#898989" }}
+          <label htmlFor="image-upload">
+            <FontAwesomeIcon
+              icon={faCamera}
+              size="2xl"
+              style={{ color: "#898989", cursor: "pointer" }}
+            />
+          </label>
+          <input
+            type="file"
+            id="image-upload"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleImageChange}
           />
-          <h4>0/5</h4>
+          {images.length} / 5
         </ImgUpload>
-        <ImgUpload>
-          <FontAwesomeIcon
-            icon={faCamera}
-            size="2xl"
-            style={{ color: "#898989" }}
-          />
-          <h4>대표 이미지</h4>
-        </ImgUpload>
+
+        <ImageUl>
+          {images.map((image, index) => (
+            <ImgList key={index}>
+              <img
+                src={image}
+                alt={`Uploaded ${index}`}
+                style={{ maxWidth: "100%" }}
+              />
+            </ImgList>
+          ))}
+        </ImageUl>
       </ImgUploadWrapper>
 
       <UploadTitleWrapper>

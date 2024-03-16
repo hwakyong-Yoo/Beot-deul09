@@ -7,6 +7,7 @@ export const ImgUploadWrapper = styled.div`
 
 export const ImgUpload = styled.div`
   display: flex;
+  background-color: #ffffff;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -15,14 +16,35 @@ export const ImgUpload = styled.div`
   border: 1px solid #a4a4a4;
   border-radius: 9px;
   color: #898989;
-  font-size: 8px;
+  font-size: 9px;
   margin-right: 9px;
 
   .fa-2xl {
     font-size: 3.5em;
+    margin-bottom: 5px;
   }
-  h4 {
-    margin: 3px 0 0 0;
+`;
+
+export const ImageUl = styled.ul`
+  overflow-x: scroll;
+  display: flex;
+  padding: 0;
+`;
+
+export const ImgList = styled.div`
+  display: flex;
+  background-color: #ffffff;
+  justify-content: center;
+  align-items: center;
+  width: 74px;
+  height: 74px;
+  border: 1px solid #a4a4a4;
+  border-radius: 9px;
+  margin-right: 9px;
+
+  img {
+    width: 90%;
+    height: 90%;
   }
 `;
 
