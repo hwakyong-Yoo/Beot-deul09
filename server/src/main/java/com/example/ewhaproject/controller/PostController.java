@@ -48,8 +48,8 @@ public class PostController {
     @PutMapping("/post/edit/{postId}") // 게시물 수정
     public ResponseEntity<PostDto> updatePost(@PathVariable long postId, @RequestBody PostDto postDto) {
         try {
-            postService.updatePostContent(postDto, postId);
-            return ResponseEntity.status(HttpStatus.OK).body(postDto);
+            PostDto updatePostContent = postService.updatePostContent(postDto, postId);
+            return ResponseEntity.status(HttpStatus.OK).body(updatePostContent);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
