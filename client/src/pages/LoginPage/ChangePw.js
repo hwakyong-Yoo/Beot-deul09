@@ -1,6 +1,7 @@
 import { Container } from "../../Layout";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 import Header from "../../components/Header";
 import {
@@ -24,21 +25,32 @@ const ChangePw = () => {
   const checkChangePwRef = useRef();
   const [checkChangePw, setCheckChangePw] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (changePw.length < 8) {
+      alert("비밀번호를 다시 확인해주세요");
       changePwRef.current.focus();
-      alert("입력 정보를 확인해주세요");
       return;
     }
 
-    if (changePw !== checkChangePw) {
-      checkChangePwRef.current.focus();
-      alert("입력 정보를 확인해주세요");
-      return;
+    try {
+      const response = await axios.put("/user/edit", {
+        password: changePw,
+      });
+
+      if (response.status === 200) {
+        alert("비밀번호가 변경되었습니다.");
+        navigate("/userinfo");
+      }
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        alert("세션이 만료되었습니다. 다시 로그인해주세요.");
+        navigate("/login");
+      } else {
+        alert("비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+      }
     }
-    navigate("/");
   };
 
   const handleCancel = () => {

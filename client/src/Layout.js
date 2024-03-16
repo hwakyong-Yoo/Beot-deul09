@@ -11,7 +11,7 @@ export const Container = styled.div`
 
   font-family: "Pretendard-Regular";
   width: 375px;
-  height: 812px;
+  min-height: 812px;
   margin: auto;
   border: 1px solid black;
 
