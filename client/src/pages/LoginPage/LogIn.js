@@ -34,10 +34,16 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const userId = id.split("@")[0];
-      const response = await axios.post("http://localhost:80/user/login", {
-        userId: userId,
-        password: password,
-      });
+      const response = await axios.post(
+        "http://localhost:80/user/login",
+        {
+          userId: userId,
+          password: password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
       console.log(response.data);
       if (response.status === 200) {
         setLoginCheck(true);

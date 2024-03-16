@@ -43,6 +43,8 @@ const Upload = () => {
   );
   const [chatroom_link, setChatroom_link] = useState("");
   const [keywords, setKeywords] = useState([]);
+  const [account_holder, setAccount_Holder] = useState("");
+  const [account_num, setAccount_Num] = useState("");
   const [images, setImages] = useState([]);
 
   const handleRemoveImage = (index) => {
@@ -109,6 +111,8 @@ const Upload = () => {
       chatroom_link: chatroom_link,
       deadline: deadline,
       keywords: keywords,
+      account_holder: account_holder,
+      account_num: account_num,
     };
 
     axios
@@ -211,6 +215,26 @@ const Upload = () => {
           placeholder="공동구매에 대한 자세한 내용을 작성해주세요."
           value={explanation}
           onChange={(e) => setExplanation(e.target.value)}
+          type="text"
+        />
+      </UploadTitleWrapper>
+
+      <UploadTitleWrapper>
+        <h3>입금받을 계좌</h3>
+        <TitleInput
+          placeholder="작성예시. 신한 000000000000"
+          value={account_num}
+          onChange={(e) => setAccount_Num(e.target.value)}
+          type="text"
+        />
+      </UploadTitleWrapper>
+
+      <UploadTitleWrapper>
+        <h3>예금주</h3>
+        <TitleInput
+          placeholder="해당계좌의 예금주명을 적어주세요."
+          value={account_holder}
+          onChange={(e) => setAccount_Holder(e.target.value)}
           type="text"
         />
       </UploadTitleWrapper>
