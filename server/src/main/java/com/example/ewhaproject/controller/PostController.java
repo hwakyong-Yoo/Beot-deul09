@@ -27,10 +27,7 @@ public class PostController {
     private KeywordService keywordService;
 
     @PostMapping("/posts") // 게시물 작성
-    public ResponseEntity<PostDto> create(@RequestBody PostDto postDto, HttpSession session) {
-        // 세션에서 userId 가져오기
-        String userId = (String) session.getAttribute("userId");
-        String name = userService.getNameById(userId);
+    public ResponseEntity<PostDto> create(@RequestBody PostDto postDto, @RequestHeader String userId) {
         log.info("현재 로그인한 사용자의 id: {}", userId);
         try {
             postDto.setUserId(userId);
