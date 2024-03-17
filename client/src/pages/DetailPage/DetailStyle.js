@@ -46,6 +46,7 @@ export const SellerEditBtn = styled.button`
   color: #004916;
   background-color: transparent;
   width: 70px;
+  cursor: pointer;
 `;
 
 export const CustomerList = styled.div`
@@ -61,6 +62,6 @@ export const OkBtn = styled.button`
   font-family: "Pretendard-Regular";
 
   color: #ffffff;
-  width: 66px;
+  width: 75px;
   height: 25px;
 `;

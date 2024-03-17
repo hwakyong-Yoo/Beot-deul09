@@ -1,7 +1,4 @@
 import { Container } from "../../Layout";
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
 import Header from "../../components/Header";
 import {
   DetailWrapper,
@@ -9,8 +6,8 @@ import {
   NameWrapper,
   TitleBtnWrapper,
   SellerEditBtn,
-  OkBtn,
   CustomerList,
+  OkBtn,
 } from "./DetailStyle";
 
 import {
@@ -18,8 +15,11 @@ import {
   Keywords,
   CategoryWrapper,
 } from "../UploadPage/UploadStyle";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
-const DetailSeller = () => {
+const DetailCustomer = () => {
   const [postDetail, setPostDetail] = useState(null);
   const [userList, setUserList] = useState(null);
   const { postId } = useParams();
@@ -51,6 +51,22 @@ const DetailSeller = () => {
     fetchCustomerList();
   }, [postId]);
 
+  if (!postDetail) {
+    return <div>Loading...</div>;
+  }
+
+  const handleOkButtonClick = async (transactionId) => {
+    try {
+      // POST 요청 보내기
+      const response = await axios.post(
+        `http://localhost:80/purchase/checked/${transactionId}`
+      );
+      console.log("거래 상태 업데이트 완료:", response.data);
+    } catch (error) {
+      console.error("거래 상태 업데이트 실패:", error);
+    }
+  };
+
   return (
     <Container>
       <Header headText={"벗들공구"} />
@@ -58,7 +74,9 @@ const DetailSeller = () => {
       <DetailWrapper>
         <ImgWrapper></ImgWrapper>
         <NameWrapper>
-          <h5>8/20명</h5>
+          <h5>
+            {userList.length} / {postDetail.min_participants}명
+          </h5>
         </NameWrapper>
         <TitleBtnWrapper>
           <h1>{postDetail.product}</h1>
@@ -78,21 +96,22 @@ const DetailSeller = () => {
         <h3>{postDetail.price}원</h3>
 
         <hr />
-        <h5>모집 종료까지 남은 시간</h5>
-        <h3>2일 8시간 51분 57초</h3>
-
-        <hr />
         <h4>{postDetail.explanation}</h4>
 
         <hr />
         <Keywords>참여자 명단</Keywords>
-        <CustomerList>
-          <h5>김*희</h5>
-          <h5>화이트</h5>
-          <h5>M</h5>
-          <h5>1개</h5>
-          <OkBtn>입금완료</OkBtn>
-        </CustomerList>
+
+        {userList.map((user, index) => (
+          <CustomerList key={index}>
+            <h5>{user.name}</h5>
+            <h5>{user.product_option}</h5>
+            <h5>{user.size}</h5>
+            <h5>{user.amount}개</h5>
+            <OkBtn onClick={() => handleOkButtonClick(user.transaction_id)}>
+              {user.status}
+            </OkBtn>
+          </CustomerList>
+        ))}
 
         <hr />
         <h5>참여완료 후 오픈채팅방에 꼭 입장해주세요!</h5>
@@ -119,4 +138,4 @@ const DetailSeller = () => {
   );
 };
 
-export default DetailSeller;
+export default DetailCustomer;

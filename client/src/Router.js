@@ -31,7 +31,7 @@ const Router = () => {
         <Route path="/upload" element={<Upload />} />
         <Route path="/detailcustomer/:postId" element={<DetailCustomer />} />
         <Route path="/detailseller/:postId" element={<DetailSeller />} />
-        <Route path="/participate" element={<Participate />} />
+        <Route path="/participate/:postId" element={<Participate />} />
       </Routes>
     </BrowserRouter>
   );

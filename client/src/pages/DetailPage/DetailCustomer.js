@@ -1,7 +1,4 @@
 import { Container } from "../../Layout";
-import { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
-import axios from "axios";
 import Header from "../../components/Header";
 import {
   DetailWrapper,
@@ -16,9 +13,13 @@ import {
   Keywords,
   CategoryWrapper,
 } from "../UploadPage/UploadStyle";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
 
 const DetailCustomer = () => {
   const [postDetail, setPostDetail] = useState(null);
+  const [maskedName, setMaskedName] = useState("");
   const { postId } = useParams();
   const navigate = useNavigate();
 
@@ -27,6 +28,13 @@ const DetailCustomer = () => {
       const response = await axios.get(`http://localhost/posts/${postId}`);
       setPostDetail(response.data);
       console.log(response.data);
+      const name = response.data.account_holder;
+      const middleIndex = Math.floor(name.length / 2);
+      setMaskedName(
+        name.substring(0, middleIndex) +
+          "*".repeat(name.length % 2) +
+          name.substring(middleIndex + 1)
+      );
     } catch (error) {
       console.error("Error fetching post detail:", error);
     }
@@ -36,10 +44,13 @@ const DetailCustomer = () => {
     fetchPostDetail();
   }, [postId]);
 
-  const name = postDetail.account_holder;
-  const middleIndex = Math.floor(name.length / 2);
-  const maskedName =
-    name.substring(0, middleIndex) + "*" + name.substring(middleIndex + 1);
+  if (!postDetail) {
+    return <div>Loading...</div>;
+  }
+
+  const handleParticipateGo = () => {
+    navigate(`/participate/${postId}`);
+  };
 
   return (
     <Container>
@@ -52,9 +63,7 @@ const DetailCustomer = () => {
         </NameWrapper>
         <TitleBtnWrapper>
           <h1>{postDetail.product}</h1>
-          <SellerEditBtn onClick={() => navigate("/participate")}>
-            참여
-          </SellerEditBtn>
+          <SellerEditBtn onClick={handleParticipateGo}>참여</SellerEditBtn>
         </TitleBtnWrapper>
         <h5>{postDetail.deadline}까지 모집중</h5>
         <CategoryWrapper>
@@ -68,10 +77,6 @@ const DetailCustomer = () => {
         <hr />
         <h5>가격</h5>
         <h3>{postDetail.price}원</h3>
-
-        <hr />
-        <h5>모집 종료까지 남은 시간</h5>
-        <h3>2일 8시간 51분 57초</h3>
 
         <hr />
         <h4>{postDetail.explanation}</h4>
