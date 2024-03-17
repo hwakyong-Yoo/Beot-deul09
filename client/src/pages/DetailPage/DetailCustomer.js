@@ -49,8 +49,19 @@ const DetailCustomer = () => {
   }
 
   const handleParticipateGo = () => {
-    navigate(`/participate/${postId}`);
+    const userId = sessionStorage.getItem("userId");
+    if (!userId) {
+      navigate("/login");
+    } else {
+      navigate(`/participate/${postId}`);
+    }
   };
+
+  if (!postDetail.status) {
+    alert("이미 마감된 공구입니다!");
+    navigate("/");
+    return null;
+  }
 
   return (
     <Container>

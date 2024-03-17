@@ -5,24 +5,68 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { useEffect } from "react";
 
 const Participate = () => {
   const navigate = useNavigate();
   const [size, setSize] = useState("");
   const [amount, setAmount] = useState(1);
+  const [height, setHeight] = useState(1);
+  const [weight, setWeight] = useState(1);
+
   const [product_option, setProduction_Option] = useState("");
+  const [response, setResponse] = useState([]);
   const { postId } = useParams();
 
   const handleSizeChange = (e) => {
     setSize(e.target.value);
   };
+  const fetchPostDetail = async () => {
+    try {
+      const response = await axios.get(`http://localhost/posts/${postId}`);
+      setResponse(response.data);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error fetching post detail:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchPostDetail();
+  }, [postId]);
 
   const handleAmountChange = (e) => {
     setAmount(e.target.value);
   };
 
+  const handleHeightChange = (e) => {
+    setHeight(e.target.value);
+  };
+
+  const handleWeightChange = (e) => {
+    setWeight(e.target.value);
+  };
+
   const handleOptionChange = (e) => {
     setProduction_Option(e.target.value);
+  };
+
+  const handleSizeCheckClick = () => {
+    // 사용자의 height와 weight 데이터를 서버로 전송
+    const data = {
+      height: height,
+      weight: weight,
+    };
+
+    axios
+      .post("http://localhost:80/send-data", data)
+      .then((response) => {
+        console.log("데이터 전송 완료:", response.data);
+        // 필요한 경우 추가적인 작업 수행
+      })
+      .catch((error) => {
+        console.error("데이터 전송 실패:", error);
+      });
   };
 
   const handleParticipateClick = () => {
@@ -52,6 +96,32 @@ const Participate = () => {
     <Container>
       <Header headText={"벗들공구"} />
       <hr />
+      <AccountInfo>
+        <h2>맞춤 사이즈를 추천해드려요!</h2>
+        <FormItem>
+          <h4>키</h4>
+          <input
+            type="number"
+            id="quantity"
+            value={height}
+            onChange={handleHeightChange}
+          />
+        </FormItem>
+
+        <hr />
+        <FormItem>
+          <h4>몸무게</h4>
+          <input
+            type="number"
+            id="quantity"
+            value={weight}
+            onChange={handleWeightChange}
+          />
+        </FormItem>
+
+        <button onClick={handleSizeCheckClick}>사이즈 확인하기</button>
+      </AccountInfo>
+
       <AccountInfo>
         <FormItem>
           <h4>사이즈</h4>
@@ -91,8 +161,8 @@ const Participate = () => {
         <h4>입금계좌 </h4>
         <hr />
         <Account>
-          <p>신한 110513648751</p>
-          <h4>예금주 : 김주희</h4>
+          <p>{response.account_num}</p>
+          <h4>예금주 : {response.account_holder}</h4>
         </Account>
       </AccountInfo>
 

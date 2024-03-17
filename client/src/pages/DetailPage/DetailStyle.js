@@ -45,7 +45,6 @@ export const SellerEditBtn = styled.button`
   font-family: "Pretendard-Regular";
   color: #004916;
   background-color: transparent;
-  width: 70px;
   cursor: pointer;
 `;
 

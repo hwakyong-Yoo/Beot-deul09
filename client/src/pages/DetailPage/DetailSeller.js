@@ -17,12 +17,13 @@ import {
 } from "../UploadPage/UploadStyle";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const DetailCustomer = () => {
   const [postDetail, setPostDetail] = useState(null);
   const [userList, setUserList] = useState(null);
   const { postId } = useParams();
+  const navigate = useNavigate();
 
   const fetchPostDetail = async () => {
     try {
@@ -55,6 +56,12 @@ const DetailCustomer = () => {
     return <div>Loading...</div>;
   }
 
+  if (!postDetail.status) {
+    alert("이미 마감된 공구입니다!");
+    navigate("/");
+    return null;
+  }
+
   const handleOkButtonClick = async (transactionId) => {
     try {
       // POST 요청 보내기
@@ -64,6 +71,18 @@ const DetailCustomer = () => {
       console.log("거래 상태 업데이트 완료:", response.data);
     } catch (error) {
       console.error("거래 상태 업데이트 실패:", error);
+    }
+  };
+  const handleCloseButtonClick = async () => {
+    try {
+      // POST 요청 보내서 공구 마감 처리
+      const response = await axios.post(`http://localhost:80/close/${postId}`);
+      console.log("공구 마감 처리 완료:", response.data);
+      navigate("/");
+
+      // 마감 처리 후 필요한 작업 수행
+    } catch (error) {
+      console.error("공구 마감 처리 실패:", error);
     }
   };
 
@@ -81,6 +100,9 @@ const DetailCustomer = () => {
         <TitleBtnWrapper>
           <h1>{postDetail.product}</h1>
           <SellerEditBtn>수정</SellerEditBtn>
+          <SellerEditBtn onClick={handleCloseButtonClick}>
+            공구마감
+          </SellerEditBtn>
         </TitleBtnWrapper>
         <h5>{postDetail.deadline}까지 모집중</h5>
         <CategoryWrapper>
