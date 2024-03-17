@@ -59,7 +59,7 @@ public class PostDto {
                 .build();
     }
 
-    /*
+
     public Post toEntity() {
         return new Post(
                 postId,
@@ -74,11 +74,13 @@ public class PostDto {
                 min_participants,
                 price,
                 date,
+                keywords,
                 deadline,
                 chatroom_link,
                 status,
                 account_num,
                 account_holder
         );
-    }*/
+    }
+
 }
