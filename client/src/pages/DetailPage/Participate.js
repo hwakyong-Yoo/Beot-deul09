@@ -10,6 +10,7 @@ const Participate = () => {
   const navigate = useNavigate();
   const [size, setSize] = useState("");
   const [amount, setAmount] = useState(1);
+  const [product_option, setProduction_Option] = useState("");
   const { postId } = useParams();
 
   const handleSizeChange = (e) => {
@@ -20,13 +21,22 @@ const Participate = () => {
     setAmount(e.target.value);
   };
 
+  const handleOptionChange = (e) => {
+    setProduction_Option(e.target.value);
+  };
+
   const handleParticipateClick = () => {
     const postData = {
       amount: amount,
       size: size,
+      product_option: product_option,
     };
     axios
-      .post(`http://localhost:80/purchase/${postId}`, postData)
+      .post(`http://localhost:80/purchase/${postId}`, postData, {
+        headers: {
+          userId: sessionStorage.getItem("userId"),
+        },
+      })
       .then((response) => {
         console.log("참여가 완료되었습니다:", response.data);
         alert("참여가 완료되었습니다!");
@@ -47,9 +57,11 @@ const Participate = () => {
           <h4>사이즈</h4>
           <select id="size" value={size} onChange={handleSizeChange}>
             <option value="">사이즈 선택</option>
+            <option value="S">XS</option>
             <option value="S">S</option>
             <option value="M">M</option>
             <option value="L">L</option>
+            <option value="L">XL</option>
           </select>
         </FormItem>
         <hr />
@@ -63,6 +75,16 @@ const Participate = () => {
             onChange={handleAmountChange}
           />
         </FormItem>
+        <hr />
+        <FormItem>
+          <h4>옵션</h4>
+          <input
+            type="text"
+            id="option"
+            value={product_option}
+            onChange={handleOptionChange}
+          />
+        </FormItem>
       </AccountInfo>
       <hr />
       <AccountInfo>
@@ -73,6 +95,7 @@ const Participate = () => {
           <h4>예금주 : 김주희</h4>
         </Account>
       </AccountInfo>
+
       <ParticipateButton onClick={handleParticipateClick}>
         참여하기
       </ParticipateButton>

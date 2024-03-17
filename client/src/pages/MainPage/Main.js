@@ -52,6 +52,10 @@ const Main = () => {
     } else {
       navigate(`/detailcustomer/${postId}`);
     }
+
+    if (userId === null || userId === undefined) {
+      navigate(`/detailcustomer/${postId}`);
+    }
   };
 
   useEffect(() => {
@@ -59,7 +63,8 @@ const Main = () => {
       try {
         const response = await axios.get("http://localhost:80/posts");
         setAllItems(response.data);
-        console.log(allItems);
+        console.log("allitems: ", response.data);
+        console.log(sessionStorage.getItem("userId"));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -81,37 +86,47 @@ const Main = () => {
         />
       </MainSearchForm>
 
-      <RecommendSection>
-        <Title>벗들을 위한 추천상품</Title>
-        <RecommendWrapper>
-          <RecommendItem>
-            <RemainDay>참여마감 : 24.03.20</RemainDay>
-            <RecommendItemImg>
-              <img
-                className="item"
-                src={process.env.PUBLIC_URL + "/assets/item.png"}
-                alt="Item"
-              />
-            </RecommendItemImg>
-            <DayWrapper>
-              <RecommendItemTitle>블랙 숏돕바 공구</RecommendItemTitle>
-              <DDay>D-8</DDay>
-            </DayWrapper>
-          </RecommendItem>
-          <RecommendItem></RecommendItem>
-        </RecommendWrapper>
-      </RecommendSection>
+      {userId && (
+        <RecommendSection>
+          <Title>벗들을 위한 추천상품</Title>
+          <RecommendWrapper>
+            <RecommendItem>
+              <RemainDay>참여마감 : 24.03.20</RemainDay>
+              <RecommendItemImg>
+                <img
+                  className="item"
+                  src={process.env.PUBLIC_URL + "/assets/item.png"}
+                  alt="Item"
+                />
+              </RecommendItemImg>
+              <DayWrapper>
+                <RecommendItemTitle>블랙 숏돕바 공구</RecommendItemTitle>
+                <DDay>D-8</DDay>
+              </DayWrapper>
+            </RecommendItem>
+            <RecommendItem></RecommendItem>
+          </RecommendWrapper>
+        </RecommendSection>
+      )}
+
+      {!userId && (
+        <RecommendSection>
+          <img
+            className="banner"
+            src={process.env.PUBLIC_URL + "/assets/banner.png"}
+            alt="Banner"
+          />
+        </RecommendSection>
+      )}
 
       <RecruitBtn onClick={handleRecruitClick}>+ 공동구매 모집하기</RecruitBtn>
 
       <ItemSection>
         {allItems.map((item, index) => {
-          // deadline을 Date 객체로 변환
           const deadlineDate = new Date(item.deadline);
 
-          // D-Day 계산
           const timeDiff = deadlineDate.getTime() - today.getTime();
-          const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // 밀리초를 일로 변환 후 올림 처리
+          const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
 
           return (
             <ItemWrapper
