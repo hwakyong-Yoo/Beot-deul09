@@ -63,7 +63,9 @@ public class PostDto {
                 .build();
     }
 
+
     public Post toEntity() {
+<<<<<<< HEAD
         Post post = new Post();
         post.setPostId(this.postId);
         post.setUserId(this.userId);
@@ -109,5 +111,28 @@ public class PostDto {
         this.imageUrls = post.getPostImages().stream()
                 .map(PostImage::getUrl)
                 .collect(Collectors.toList());
+=======
+        return new Post(
+                postId,
+                userId,
+                product,
+                img,
+                explanation,
+                size_img,
+                answer1,
+                answer2,
+                answer3,
+                min_participants,
+                price,
+                date,
+                keywords,
+                deadline,
+                chatroom_link,
+                status,
+                account_num,
+                account_holder
+        );
+>>>>>>> 6c47fa1f55ebfb8a5f585463715d6e0be736ddac
     }
+
 }

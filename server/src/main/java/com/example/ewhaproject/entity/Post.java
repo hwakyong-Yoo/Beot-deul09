@@ -4,9 +4,15 @@ import com.example.ewhaproject.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+<<<<<<< HEAD
 import java.util.List;
 
 @AllArgsConstructor
+=======
+import java.util.ArrayList;
+import java.util.List;
+
+>>>>>>> 6c47fa1f55ebfb8a5f585463715d6e0be736ddac
 @NoArgsConstructor
 @ToString
 @Entity
@@ -50,9 +56,18 @@ public class Post {
     @Column
     private String account_holder;
 
+<<<<<<< HEAD
     @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     @OrderBy("postId asc")
     private List<PostImage> postImages;
+=======
+    @OneToMany(
+            mappedBy = "post",
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE},
+            orphanRemoval = true
+    )
+    private List<Photo> photo = new ArrayList<>();
+>>>>>>> 6c47fa1f55ebfb8a5f585463715d6e0be736ddac
 
     public void updateDate(String currentFormattedDate) { this.date = currentFormattedDate; }
 
@@ -65,4 +80,26 @@ public class Post {
         this.deadline=deadline;
     }
     public void close() { this.status = false;}
+
+    public void update(String product, String explanation) {
+        this.product = product;
+        this.explanation = explanation;
+    }
+
+    // Post에서 파일 처리 위함
+    public void addPhoto(Photo photo) {
+        this.photo.add(photo);
+
+        // 게시글에 파일이 저장되어있지 않은 경우
+        if(photo.getPost() != this)
+            // 파일 저장
+            photo.setPost(this);
+    }
+
+    @Builder
+    public Post(User user, String product, String explanation) {
+        this.userId = user.getUserId();
+        this.product = product;
+        this.explanation = explanation;
+    }
 }
