@@ -17,7 +17,7 @@ public class TransactionDto {
     private String amount;
     private String product_option;
     private String size;
-    private String status = "입금 미완료";
+    private String status = "입금 대기";
 
     public static TransactionDto createdTransactionDto(Transaction createdTransaction) {
         return TransactionDto.builder()
