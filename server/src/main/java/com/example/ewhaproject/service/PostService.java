@@ -31,6 +31,31 @@ public class PostService {
         log.info("DB에 게시물 저장 성공");
 
         postKeywordService.saveKeywords(createdPost, postDto.getKeywords());
+
+        /*
+        if (postImageUploadDto.getFiles() != null && !postImageUploadDto.getFiles().isEmpty()) {
+            for (MultipartFile file : postImageUploadDto.getFiles()) {
+                UUID uuid = UUID.randomUUID();
+                String imageFileName = uuid + "_" + file.getOriginalFilename();
+
+                File destinationFile = new File(uploadFolder + imageFileName);
+
+                try {
+                    file.transferTo(destinationFile);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                PostImage image = PostImage.builder()
+                        .url("/boardImages/" + imageFileName)
+                        .post(result)
+                        .build();
+
+                postImageRepository.save(image);
+            }
+        }
+        */
+
         return PostDto.createdPostDto(createdPost);
     }
 

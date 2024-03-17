@@ -4,11 +4,14 @@ import com.example.ewhaproject.dto.PostDto;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
 @Getter
+@Setter
 @Table(name="TB_POST")
 public class Post {
     @Id
@@ -47,10 +50,14 @@ public class Post {
     @Column
     private String account_holder;
 
+    @OneToMany(mappedBy = "post", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OrderBy("postId asc")
+    private List<PostImage> postImages;
+
     public void updateDate(String currentFormattedDate) { this.date = currentFormattedDate; }
 
     public void update(String explanation, String answer1, String answer2, String answer3, double price, String deadline) {
-        this.explanation = explanation;
+        this.explanation=explanation;
         this.answer1= answer1;
         this.answer2=answer2;
         this.answer3= answer3;

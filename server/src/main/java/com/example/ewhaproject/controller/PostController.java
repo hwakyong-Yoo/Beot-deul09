@@ -2,6 +2,7 @@ package com.example.ewhaproject.controller;
 
 import com.example.ewhaproject.dto.KeywordDto;
 import com.example.ewhaproject.dto.PostDto;
+import com.example.ewhaproject.dto.PostImageUploadDto;
 import com.example.ewhaproject.entity.Post;
 import com.example.ewhaproject.service.KeywordService;
 import com.example.ewhaproject.service.PostService;

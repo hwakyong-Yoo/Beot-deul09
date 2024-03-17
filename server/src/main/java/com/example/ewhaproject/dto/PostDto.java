@@ -1,18 +1,20 @@
 package com.example.ewhaproject.dto;
 
 import com.example.ewhaproject.entity.Post;
+import com.example.ewhaproject.entity.PostImage;
 import lombok.*;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
 @Getter
 @Setter
 @Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class PostDto {
     private Long postId;
     private String userId;
@@ -32,6 +34,8 @@ public class PostDto {
     private Boolean status = true;
     private String account_num;
     private String account_holder;
+
+    private List<String> imageUrls;
 
     public static String getCurrentFormattedDate() {
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
@@ -60,24 +64,50 @@ public class PostDto {
     }
 
     public Post toEntity() {
-        return new Post(
-                postId,
-                userId,
-                product,
-                img,
-                explanation,
-                size_img,
-                answer1,
-                answer2,
-                answer3,
-                min_participants,
-                price,
-                date,
-                deadline,
-                chatroom_link,
-                status,
-                account_num,
-                account_holder
-        );
+        Post post = new Post();
+        post.setPostId(this.postId);
+        post.setUserId(this.userId);
+        post.setProduct(this.product);
+        post.setImg(this.img);
+        post.setExplanation(this.explanation);
+        post.setSize_img(this.size_img);
+        post.setAnswer1(this.answer1);
+        post.setAnswer2(this.answer2);
+        post.setAnswer3(this.answer3);
+        post.setMin_participants(this.min_participants);
+        post.setPrice(this.price);
+        post.setDate(this.date);
+        post.setDeadline(this.deadline);
+        post.setChatroom_link(this.chatroom_link);
+        post.setStatus(this.status);
+        post.setAccount_num(this.account_num);
+        post.setAccount_holder(this.account_holder);
+
+        return post;
+    }
+
+    @Builder
+    public PostDto(Post post) {
+        this.postId = post.getPostId();
+        this.userId = post.getUserId();
+        this.product = post.getProduct();
+        this.img = post.getImg();
+        this.explanation = post.getExplanation();
+        this.size_img = post.getSize_img();
+        this.answer1 = post.getAnswer1();
+        this.answer2 = post.getAnswer2();
+        this.answer3 = post.getAnswer3();
+        this.min_participants = post.getMin_participants();
+        this.price = post.getPrice();
+        this.date = post.getDate();
+        this.deadline = post.getDeadline();
+        this.chatroom_link = post.getChatroom_link();
+        this.status = post.getStatus();
+        this.account_num = post.getAccount_num();
+        this.account_holder = post.getAccount_holder();
+
+        this.imageUrls = post.getPostImages().stream()
+                .map(PostImage::getUrl)
+                .collect(Collectors.toList());
     }
 }
