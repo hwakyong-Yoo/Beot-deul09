@@ -46,17 +46,28 @@ const Main = () => {
     }
   };
 
+  const handleItemClick = (itemUserId, postId) => {
+    if (userId === itemUserId) {
+      navigate(`/detailseller/${postId}`);
+    } else {
+      navigate(`/detailcustomer/${postId}`);
+    }
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:80/posts");
         setAllItems(response.data);
+        console.log(allItems);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, []);
+
+  const today = new Date();
 
   return (
     <Container>
@@ -94,25 +105,39 @@ const Main = () => {
       <RecruitBtn onClick={handleRecruitClick}>+ 공동구매 모집하기</RecruitBtn>
 
       <ItemSection>
-        {allItems.map((item, index) => (
-          <ItemWrapper key={index}>
-            <ItemImg>
-              <img
-                className="item"
-                src={process.env.PUBLIC_URL + "/assets/item.png"}
-                alt="Item"
-              />
-            </ItemImg>
-            <ItemTitle>{item.product}</ItemTitle>
-            <HashtagWrapper>
-              {/* 여기에 해시태그 표시 로직 추가 */}
-            </HashtagWrapper>
-            <DayWrapper>
-              <DDay>{/* 여기에 D-Day 설정 */}</DDay>
-              <RemainDay>{item.deadline}</RemainDay>
-            </DayWrapper>
-          </ItemWrapper>
-        ))}
+        {allItems.map((item, index) => {
+          // deadline을 Date 객체로 변환
+          const deadlineDate = new Date(item.deadline);
+
+          // D-Day 계산
+          const timeDiff = deadlineDate.getTime() - today.getTime();
+          const daysDiff = Math.ceil(timeDiff / (1000 * 3600 * 24)); // 밀리초를 일로 변환 후 올림 처리
+
+          return (
+            <ItemWrapper
+              key={index}
+              onClick={() => handleItemClick(item.userId, item.postId)}
+            >
+              <ItemImg>
+                <img
+                  className="item"
+                  src={process.env.PUBLIC_URL + "/assets/item.png"}
+                  alt="Item"
+                />
+              </ItemImg>
+              <ItemTitle>{item.product}</ItemTitle>
+              <HashtagWrapper>
+                {item.keywords.map((keyword, keywordIndex) => (
+                  <Hashtag key={keywordIndex}>{keyword}</Hashtag>
+                ))}
+              </HashtagWrapper>
+              <DayWrapper>
+                <DDay>{daysDiff > 0 ? `D-${daysDiff}` : "마감"}</DDay>
+                <RemainDay>참여마감 : {item.deadline}</RemainDay>
+              </DayWrapper>
+            </ItemWrapper>
+          );
+        })}
       </ItemSection>
     </Container>
   );

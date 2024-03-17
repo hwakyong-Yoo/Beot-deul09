@@ -1,5 +1,8 @@
 import { Container } from "../../Layout";
 import Header from "../../components/Header";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 import {
   UserInfoWrapper,
   UserInformation,
@@ -20,6 +23,21 @@ import { useNavigate } from "react-router";
 
 const My = () => {
   const navigate = useNavigate();
+  const [purchaseData, setPurchaseData] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:80/product/seller");
+        setPurchaseData(response.data);
+        console.log(purchaseData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
   const handleNextBtn = () => {
     navigate("/userinfo");
   };

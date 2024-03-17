@@ -3,6 +3,7 @@ import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { useNavigate } from "react-router-dom";
 import {
   faCamera,
   faTimesCircle,
@@ -31,6 +32,7 @@ import axios from "axios";
 import keywordList from "./keywordList";
 
 const Upload = () => {
+  const navigate = useNavigate();
   const [product, setProduct] = useState("");
   const [explanation, setExplanation] = useState("");
   const [answer1, setAnswer1] = useState("");
@@ -43,7 +45,11 @@ const Upload = () => {
   );
   const [chatroom_link, setChatroom_link] = useState("");
   const [keywords, setKeywords] = useState([]);
+  const [account_holder, setAccount_Holder] = useState("");
+  const [account_num, setAccount_Num] = useState("");
   const [images, setImages] = useState([]);
+
+  const userId = sessionStorage.getItem("userId"); // userId 가져오기
 
   const handleRemoveImage = (index) => {
     const newImages = [...images];
@@ -109,17 +115,20 @@ const Upload = () => {
       chatroom_link: chatroom_link,
       deadline: deadline,
       keywords: keywords,
+      account_holder: account_holder,
+      account_num: account_num,
     };
 
     axios
       .post("http://localhost:80/posts", uploadData, {
         headers: {
-          Authorization: `Bearer ${sessionStorage.getItem("userId")}`,
+          userId: userId,
         },
       })
       .then((response) => {
         // 요청이 성공적으로 처리됐을 때의 동작
         console.log(response.data);
+        navigate("/");
       })
       .catch((error) => {
         // 요청이 실패했을 때의 동작
@@ -211,6 +220,26 @@ const Upload = () => {
           placeholder="공동구매에 대한 자세한 내용을 작성해주세요."
           value={explanation}
           onChange={(e) => setExplanation(e.target.value)}
+          type="text"
+        />
+      </UploadTitleWrapper>
+
+      <UploadTitleWrapper>
+        <h3>입금받을 계좌</h3>
+        <TitleInput
+          placeholder="작성예시. 신한 000000000000"
+          value={account_num}
+          onChange={(e) => setAccount_Num(e.target.value)}
+          type="text"
+        />
+      </UploadTitleWrapper>
+
+      <UploadTitleWrapper>
+        <h3>예금주</h3>
+        <TitleInput
+          placeholder="해당계좌의 예금주명을 적어주세요."
+          value={account_holder}
+          onChange={(e) => setAccount_Holder(e.target.value)}
           type="text"
         />
       </UploadTitleWrapper>

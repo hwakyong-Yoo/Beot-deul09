@@ -12,6 +12,7 @@ import FindPw from "./pages/LoginPage/FindPw";
 import ChangePw from "./pages/LoginPage/ChangePw";
 import DetailCustomer from "./pages/DetailPage/DetailCustomer";
 import DetailSeller from "./pages/DetailPage/DetailSeller";
+import Participate from "./pages/DetailPage/Participate";
 
 const Router = () => {
   return (
@@ -28,8 +29,9 @@ const Router = () => {
         <Route path="/search" element={<Search />} />
         <Route path="/userinfo" element={<UserInfo />} />
         <Route path="/upload" element={<Upload />} />
-        <Route path="/detailcustomer" element={<DetailCustomer />} />
-        <Route path="/detailseller" element={<DetailSeller />} />
+        <Route path="/detailcustomer/:postId" element={<DetailCustomer />} />
+        <Route path="/detailseller/:postId" element={<DetailSeller />} />
+        <Route path="/participate" element={<Participate />} />
       </Routes>
     </BrowserRouter>
   );

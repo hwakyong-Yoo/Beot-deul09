@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { NavLink as Link } from "react-router-dom";
 
 export const MainSearchForm = styled.form`
   border: 2px solid #b8bdb9;
@@ -86,17 +87,18 @@ export const RecruitBtn = styled.button`
 
 export const ItemSection = styled.div`
   display: flex;
-  justify-content: space-around;
-
+  justify-content: space-between;
+  flex-wrap: wrap;
   width: 336px;
   margin: 18px auto;
 `;
 
 export const ItemWrapper = styled.div`
   width: 162px;
-  height: 162px;
+  height: 168px;
   border: 1px solid #d9d9d9;
   border-radius: 11px;
+  margin-bottom: 16px;
 `;
 
 export const ItemImg = styled.div`
@@ -114,15 +116,19 @@ export const ItemTitle = styled.div`
 
 export const HashtagWrapper = styled.div`
   display: flex;
-  margin: 4px 0 4px 10px;
+  margin: 4px 0 0 10px;
+  flex-wrap: wrap;
+  max-height: 0.9em;
+  overflow: hidden;
 `;
 
 export const Hashtag = styled.div`
   width: 31px;
-  height: 9px;
+  height: 11px;
   display: flex;
+  align-items: center;
   justify-content: center;
-  margin-right: 4px;
+  margin: 0 4px 4px 0;
   background-color: #85cc1680;
   border-radius: 8px;
   font-size: 7px;
@@ -133,7 +139,7 @@ export const DayWrapper = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 4px 10px 0 10px;
+  padding: 4px 10px;
 `;
 
 export const DDay = styled.div`
@@ -146,10 +152,18 @@ export const DDay = styled.div`
   font-weight: 700;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
 `;
 
 export const RemainDay = styled.div`
   font-size: 4px;
   margin: 5px 0 0 9px;
+`;
+
+export const ItemLink = styled(Link)`
+  cursor: pointer;
+  font-family: "GmarketSansMedium";
+  font-size: 24px;
+  color: black;
+  text-decoration: none;
 `;
