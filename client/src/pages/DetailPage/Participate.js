@@ -13,6 +13,7 @@ const Participate = () => {
   const [amount, setAmount] = useState(1);
   const [height, setHeight] = useState(1);
   const [weight, setWeight] = useState(1);
+  const [recommendSize, setRecommendSize] = useState("");
 
   const [product_option, setProduction_Option] = useState("");
   const [response, setResponse] = useState([]);
@@ -62,6 +63,8 @@ const Participate = () => {
       .post("http://localhost:80/send-data", data)
       .then((response) => {
         console.log("데이터 전송 완료:", response.data);
+        setRecommendSize(response.data);
+
         // 필요한 경우 추가적인 작업 수행
       })
       .catch((error) => {
@@ -120,6 +123,7 @@ const Participate = () => {
         </FormItem>
 
         <button onClick={handleSizeCheckClick}>사이즈 확인하기</button>
+        {recommendSize && <h3>추천 사이즈: {recommendSize}</h3>}
       </AccountInfo>
 
       <AccountInfo>
