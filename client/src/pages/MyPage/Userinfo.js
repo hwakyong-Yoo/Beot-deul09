@@ -45,20 +45,18 @@ const UserInfo = () => {
       </InfoWrapper>
 
       <EditWrapper>
-        <BtnWrapper>
-          <EditBtn onClick={() => navigate("/changepw")}>
-            비밀번호 재설정
-          </EditBtn>
+        <BtnWrapper onClick={() => navigate("/changepw")}>
+          <EditBtn>비밀번호 재설정</EditBtn>
           <FontAwesomeIcon icon={faAngleRight} />
         </BtnWrapper>
         <hr />
-        <BtnWrapper>
-          <EditBtn onClick={handleLogoutClick}>로그아웃</EditBtn>
+        <BtnWrapper onClick={handleLogoutClick}>
+          <EditBtn>로그아웃</EditBtn>
           <FontAwesomeIcon icon={faAngleRight} />
         </BtnWrapper>
         <hr />
-        <BtnWrapper>
-          <EditBtn onClick={handleDeleteClick}>회원탈퇴</EditBtn>
+        <BtnWrapper onClick={handleDeleteClick}>
+          <EditBtn>회원탈퇴</EditBtn>
           <FontAwesomeIcon icon={faAngleRight} />
         </BtnWrapper>
       </EditWrapper>

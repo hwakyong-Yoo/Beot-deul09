@@ -24,19 +24,48 @@ import { useNavigate } from "react-router";
 const My = () => {
   const navigate = useNavigate();
   const [purchaseData, setPurchaseData] = useState([]);
+  const [sellData, setSellData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:80/product/seller");
-        setPurchaseData(response.data);
-        console.log(purchaseData);
+        const response = await axios.get(
+          "http://localhost:80/products/seller",
+          {
+            headers: {
+              userId: sessionStorage.getItem("userId"),
+            },
+          }
+        );
+        setSellData(response.data);
+        console.log("내가 공구한: ", response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:80/products/buyer", {
+          headers: {
+            userId: sessionStorage.getItem("userId"),
+          },
+        });
+        setPurchaseData(response.data);
+        console.log("내가 참여한: ", response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchData();
+  }, []);
+
+  const handlePurchaseStateClick = (postId) => {
+    navigate(`/detailcustomer/${postId}`);
+  };
 
   const handleNextBtn = () => {
     navigate("/userinfo");
@@ -59,56 +88,37 @@ const My = () => {
       <PurchaseListWrapper>
         <PurchaseType>내가 공구한</PurchaseType>
         <PurchaseList>
-          <PurchaseState>
-            <State inProgress={inProgress}>
-              {inProgress ? "진행 중" : "진행 완료"}
-            </State>
-            <DueDate>참여마감 : 24.03.25</DueDate>
-          </PurchaseState>
-
-          <PurchaseItem>
-            <img
-              className="item"
-              src={process.env.PUBLIC_URL + "/assets/item.png"}
-              alt="Item"
-            />
-            <ItemInfo>
-              <h5>원더원더</h5>
-              <h3>컴공과 후리스 공구</h3>
-              <Price>
-                <h4>50000원</h4>
-                <h5>30개</h5>
-              </Price>
-            </ItemInfo>
-          </PurchaseItem>
+          {sellData.map((sell, index) => (
+            <PurchaseState
+              key={index}
+              onClick={() => handlePurchaseStateClick(sell.postId)}
+            >
+              <State inProgress={sell.inProgress}>
+                {sell.inProgress ? "진행 중" : "진행 완료"}
+              </State>
+              <h3>{sell.product}</h3>
+              <h4>{sell.price}원</h4>
+              <h5>{sell.min_participants}명</h5>
+            </PurchaseState>
+          ))}
         </PurchaseList>
       </PurchaseListWrapper>
 
       <PurchaseListWrapper>
         <PurchaseType>내가 참여한</PurchaseType>
         <PurchaseList>
-          <PurchaseState>
-            <State inProgress={inProgress}>
-              {inProgress ? "진행 중" : "진행 완료"}
-            </State>
-            <DueDate>참여마감 : 24.03.25</DueDate>
-          </PurchaseState>
+          {purchaseData.map((purchase, index) => (
+            <PurchaseState
+              key={index}
+              onClick={() => handlePurchaseStateClick(purchase.postId)}
+            >
+              <State inProgress={purchase.inProgress}>{purchase.status}</State>
+              <h5>{purchase.product_option}</h5>
+              <h3>{purchase.size}</h3>
 
-          <PurchaseItem>
-            <img
-              className="item"
-              src={process.env.PUBLIC_URL + "/assets/item.png"}
-              alt="Item"
-            />
-            <ItemInfo>
-              <h5>원더원더</h5>
-              <h3>컴공과 후리스 공구</h3>
-              <Price>
-                <h4>50000원</h4>
-                <h5>30개</h5>
-              </Price>
-            </ItemInfo>
-          </PurchaseItem>
+              <h5>{purchase.amount}개</h5>
+            </PurchaseState>
+          ))}
         </PurchaseList>
       </PurchaseListWrapper>
     </Container>
